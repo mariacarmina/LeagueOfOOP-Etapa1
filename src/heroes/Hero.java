@@ -109,7 +109,6 @@ public abstract class Hero {
         takenDamage += Math.round(multiplier * ignite.getDamage());
         setEffect(2, Math.round(multiplier * ignite.getRoundDamage()), false);
     }
-
     public void receive(Execute execute) {
         if (currentHP <= (int) execute.getHPLimit()) {
             baseTakenDamage += currentHP;

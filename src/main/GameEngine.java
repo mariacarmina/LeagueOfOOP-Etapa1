@@ -44,7 +44,7 @@ public class GameEngine {
     }
 
     public void playGame() {
-        for (int i = 0; i < moves.size(); ++i) {
+        for (int i = 0; i < 22; ++i) {
             for (int j = 0; j < heroes.size(); ++j) {
                 if (!heroes.get(j).isStunned() && !heroes.get(j).isDead()) {
                     heroes.get(j).moveHero(moves.get(i).charAt(j));

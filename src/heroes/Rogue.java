@@ -26,7 +26,7 @@ public class Rogue extends Hero {
     }
 
     public void receive(Execute execute) {
-        multiplier = 1.5f;
+        multiplier = 1.15f;
         super.receive(execute);
     }
 

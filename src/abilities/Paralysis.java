@@ -34,8 +34,10 @@ public class Paralysis extends Ability {
     public void cast(Hero source, Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        if (Map.getInstance().getField(source.getRow(), source.getColumn()) == Constants.ROGUE_LAND_MODIFIER_CHAR)
+        rounds = 3;
+        if (Map.getInstance().getField(source.getRow(), source.getColumn()) == Constants.ROGUE_LAND_MODIFIER_CHAR) {
             rounds *= 2;
+        }
         target.receive(this);
     }
 }
