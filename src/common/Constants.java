@@ -1,4 +1,4 @@
-package com.common;
+package common;
 
 public class Constants {
     public static final int KNIGHT_HP = 900;

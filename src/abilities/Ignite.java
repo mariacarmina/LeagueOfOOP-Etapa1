@@ -1,22 +1,18 @@
-package com.abilities;
+package abilities;
 
-import com.common.Constants;
-import com.heroes.Hero;
-import com.main.Map;
+import heroes.Hero;
 
-public class Paralysis extends Ability {
+public class Ignite extends Ability {
     private float baseDamage;
     private float perLevelDamage;
     private float baseRoundDamage;
     private float perLevelRoundDamage;
-    private int rounds;
 
-    public Paralysis() {
-        baseDamage = 40f;
-        perLevelDamage = 10f;
-        baseRoundDamage = 40f;
-        perLevelRoundDamage = 10f;
-        rounds = 3;
+    public Ignite() {
+        baseDamage = 150f;
+        perLevelDamage = 20f;
+        baseRoundDamage = 50f;
+        perLevelRoundDamage = 30f;
     }
 
     public float getDamage() {
@@ -27,15 +23,9 @@ public class Paralysis extends Ability {
         return multiplier * (baseRoundDamage + level * perLevelRoundDamage);
     }
 
-    public int getRounds() {
-        return rounds;
-    }
-
     public void cast(Hero source, Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        if (Map.getInstance().getField(source.getRow(), source.getColumn()) == Constants.ROGUE_LAND_MODIFIER_CHAR)
-            rounds *= 2;
         target.receive(this);
     }
 }

@@ -1,8 +1,11 @@
-package com.heroes;
+package heroes;
 
-import com.abilities.*;
-import com.common.Constants;
-import com.main.Map;
+import abilities.*;
+import common.Constants;
+import main.Map;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class Pyromancer extends Hero {
 
@@ -57,6 +60,16 @@ public class Pyromancer extends Hero {
             return Constants.PYROMANCER_LAND_MODIFIER_BONUS;
         }
         return Constants.STANDARD_LAND_MODIFIER_BONUS;
+    }
+
+    public void print(BufferedWriter out) throws IOException {
+        if (this.isDead()) {
+            out.write("P " + "dead");
+            out.newLine();
+        } else {
+            out.write("P " + level + " " + currentXP + " " + currentHP + " " + row + " " + column);
+            out.newLine();
+        }
     }
 }
 

@@ -1,9 +1,12 @@
-package com.main;
+package main;
 
-import com.abilities.Ability;
-import com.heroes.Hero;
-import com.heroes.Wizard;
+import abilities.Ability;
+import heroes.Hero;
+import heroes.Wizard;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameEngine {
@@ -56,6 +59,16 @@ public class GameEngine {
                 }
             }
         }
+    }
+
+    public void print(String outputFile) throws IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter(outputFile));
+        for (Hero hero : heroes) {
+            hero.print(out);
+        }
+        out.newLine();
+        out.flush();
+        out.close();
     }
 
 }

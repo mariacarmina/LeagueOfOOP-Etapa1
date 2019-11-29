@@ -1,6 +1,6 @@
-package com.abilities;
+package abilities;
 
-import com.heroes.Hero;
+import heroes.Hero;
 
 public class Execute extends Ability {
     private float baseDamage;

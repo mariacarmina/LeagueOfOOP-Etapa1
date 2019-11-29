@@ -1,9 +1,11 @@
-package com.heroes;
+package heroes;
 
 
-import com.abilities.*;
-import com.common.Constants;
+import abilities.*;
+import common.Constants;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Hero {
@@ -26,6 +28,18 @@ public abstract class Hero {
     public Hero(int row, int column, int baseHP, int perLevelHP) {
         this.row = row;
         this.column = column;
+        this.baseHP = baseHP;
+        this.perLevelHP = perLevelHP;
+        this.remainingRounds = 0;
+        this.damageOvertime = 0;
+        this.stunned = false;
+        this.currentXP = 0;
+        this.currentHP = this.getMaxHP();
+        this.level = 0;
+        this.dead = false;
+        this.takenDamage = 0;
+        this.baseTakenDamage = 0;
+        this.abilities = new ArrayList<Ability>();
     }
 
 
@@ -171,5 +185,7 @@ public abstract class Hero {
     public int getColumn() {
         return column;
     }
+
+    public abstract void print(BufferedWriter out) throws IOException;
 }
 

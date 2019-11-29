@@ -1,7 +1,7 @@
-package com.main;
+package main;
 
-import com.heroes.Hero;
-import com.heroes.HeroFactory;
+import heroes.Hero;
+import heroes.HeroFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,7 +38,6 @@ public class GameInputLoader {
             int positionColumn = input.nextInt();
             heroes.add(HeroFactory.getInstance().getHeroByType(type, positionRow, positionColumn));
         }
-
         numRounds = input.nextInt();
         for (int i = 0; i < numRounds; ++i) {
             moves.add(input.next());

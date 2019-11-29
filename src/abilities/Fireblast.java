@@ -1,14 +1,14 @@
-package com.abilities;
+package abilities;
 
-import com.heroes.Hero;
+import heroes.Hero;
 
-public class Slam extends Ability {
+public class Fireblast extends Ability {
     private float baseDamage;
     private float perLevelDamage;
 
-    public Slam() {
-        baseDamage = 100f;
-        perLevelDamage = 40f;
+    public Fireblast() {
+        baseDamage = 350f;
+        perLevelDamage = 50f;
     }
 
     public float getDamage() {
