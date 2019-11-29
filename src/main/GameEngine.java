@@ -53,8 +53,10 @@ public class GameEngine {
             }
             for (int j = 0; j < heroes.size(); ++j) {
                 for (int k = 0; k < j; ++k) {
-                    if (heroes.get(j).isHere(heroes.get(k))) {
-                        battle(heroes.get(j), heroes.get(k));
+                    if (!heroes.get(j).isDead() && !heroes.get(k).isDead()) {
+                        if (heroes.get(j).isHere(heroes.get(k))) {
+                            battle(heroes.get(j), heroes.get(k));
+                        }
                     }
                 }
             }

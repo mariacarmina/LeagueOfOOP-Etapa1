@@ -50,6 +50,12 @@ public class Rogue extends Hero {
         super.receive(backstab);
     }
 
+    public void receive(Paralysis paralysis) {
+        multiplier = 0.9f;
+        super.receive(paralysis);
+    }
+
+
     public float getLandModifier() {
         if (Map.getInstance().getField(this.row, this.column) == Constants.ROGUE_LAND_MODIFIER_CHAR) {
             return Constants.ROGUE_LAND_MODIFIER_BONUS;

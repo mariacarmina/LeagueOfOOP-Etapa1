@@ -101,12 +101,14 @@ public abstract class Hero {
     public void receive(Fireblast fireblast) {
         baseTakenDamage += Math.round(fireblast.getDamage());
         takenDamage += Math.round(multiplier * fireblast.getDamage());
+        System.out.println(multiplier * fireblast.getDamage());
     }
 
     public void receive(Ignite ignite) {
         baseTakenDamage += Math.round(ignite.getDamage());
         takenDamage += Math.round(multiplier * ignite.getDamage());
         setEffect(2, Math.round(multiplier * ignite.getRoundDamage()), false);
+        System.out.println(multiplier * ignite.getDamage());
     }
 
     public void receive(Execute execute) {
