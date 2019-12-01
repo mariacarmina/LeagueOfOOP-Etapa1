@@ -5,8 +5,7 @@
   + fiecare tip de erou are cate o clasa specifica ce mosteneste clasa abstracta Hero;
   + fiecare abilitate are o clasa proprie ce mosteneste clasa abstracta Ability;
   + logica jocului este implementata in clasa GameEngine;
-  + respecta principiile S.O.L.I.D.;
-  + am aplicat conceptul de double-dispatch, folosindu-ma de Visitor Pattern.
+  + am aplicat conceptul de double-dispatch.
   
 ### Design:
     
@@ -24,72 +23,23 @@
     + in clasa abstracta Hero se regasesc 8 metode _receive(abilitate)_ corespunzatoare 
     pentru fiecare abilitate in parte;
     
-    + fiecare metoda de _receive_ are calculat : 
+    + fiecare metoda de _receive_ executa urmatoarele actiuni: 
     
-      * damage-ul fara modificatori de rasa, obtinut prin metoda _getDamage()_, 
+      * calculeaza damage-ul fara modificatori de rasa, obtinut prin metoda _getDamage()_, 
       ce exista in fiecare abilitate (util pentru Deflect);
       
-      * damage-ul modificat de _amplificatorul de rasa_ specific fiecarei victime 
+      * calculeaza damage-ul modificat de _amplificatorul de rasa_ specific fiecarei victime 
       care primeste atacul;
       
-      * setarea efectului de overtime al unei abilitati, unde este necesar.
+      * seteaza efectul de overtime al unei abilitati, unde este necesar.
       
     + aceste metode sunt suprascrise in subclasele lui Hero, specificand in fiecare 
     dintre acestea, modificatorul de rasa (_multiplier_);
     
-    + declansarea vizitarii se va face printr-un apel _receive_ pe o abilitate;
-    
     + in fiecare abilitate, exista metoda _cast(atacator, atacat)_ in care elementul 
     curent este vizitat, prin apelul target.receive(this), unde target este inamicul 
     asupra caruia i se aplica abilitatea.
-    
-+---------------------------+
-| Hero                      |
-+---------------------------+
-| - multiplier              |
-+---------------------------+                               +--------------------------------+
-| + receive(Ability ability)|------------------------------>| Ability                        |
-+---------------------------+                               +--------------------------------+
-  ^                                                         | + cast()                       |
-  |                                                         | + getDamage()                  |
-  |  +-------------------+                                  +--------------------------------+
-  |- | Pyromancer        |                                    ^
-  |  +-------------------+                                    |
-  |                                                           |
-  |                                                           | +------------------+
-  |                                                           |-| Fireblast        |
-  |  +-------------------+                                    | +------------------+
-  |- | Knight            |                                    |
-  |  +-------------------+                                    | +------------------+
-  |                                                           |-| Ignite           |
-  |  +-------------------+                                    | +------------------+
-  |- | Wizard            |                                    |
-  |  +-------------------+                                    | +------------------+
-  |                                                           |-| Execute          |
-  |                                                           | +------------------+
-  |  +-------------------+                                    |    
-  |- | Rogue             |                                    | +------------------+
-  |  +-------------------+                                    |-| Slam             |
-                                                              | +------------------+
-                                                              |
-                                                              | +------------------+
-                                                              |-| Drain            |
-                                                              | +------------------+
-                                                              |
-                                                              | +------------------+
-                                                              |-| Deflect          |
-                                                              | +------------------+
-                                                              |  
-                                                              | +------------------+
-                                                              |-| Backstab         |
-                                                              | +------------------+
-                                                              |  
-                                                              | +------------------+
-                                                              |-| Paralysis        |
-                                                                +------------------+
                                                                 
-     
-     
   #### Abilitati :
   
     + in fiecare subclasa, se calculeaza damage-ul de baza dat de abilitatea respectiva 
