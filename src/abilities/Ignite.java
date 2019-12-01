@@ -1,5 +1,6 @@
 package abilities;
 
+import common.Constants;
 import heroes.Hero;
 
 public class Ignite extends Ability {
@@ -9,10 +10,10 @@ public class Ignite extends Ability {
     private float perLevelRoundDamage;
 
     public Ignite() {
-        baseDamage = 150f;
-        perLevelDamage = 20f;
-        baseRoundDamage = 50f;
-        perLevelRoundDamage = 30f;
+        baseDamage = Constants.BASE_DAMAGE_IGNITE;
+        perLevelDamage = Constants.PER_LEVEL_BASE_DAMAGE_IGNITE;
+        baseRoundDamage = Constants.DAMAGE_PER_ROUND_IGNITE;
+        perLevelRoundDamage = Constants.PER_LEVEL_DAMAGE_PER_ROUND_IGNITE;
     }
 
     public float getDamage() {
@@ -23,7 +24,7 @@ public class Ignite extends Ability {
         return multiplier * (baseRoundDamage + level * perLevelRoundDamage);
     }
 
-    public void cast(Hero source, Hero target) {
+    public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
         target.receive(this);

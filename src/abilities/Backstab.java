@@ -12,23 +12,25 @@ public class Backstab extends Ability {
 
     public Backstab() {
         rounds = 0;
-        baseDamage = 200f;
-        perLevelDamage = 20f;
+        baseDamage = Constants.BASE_DAMAGE_BACKSTAB;
+        perLevelDamage = Constants.PER_LEVEL_BASE_DAMAGE_BACKSTAB;
     }
 
     public float getDamage() {
         float result = (baseDamage + level * perLevelDamage);
         result *= multiplier;
         if (critical) {
-            result *= 1.5f;
+            result *= Constants.BONUS_CRITICAL;
         }
         return result;
     }
 
-    public void cast(Hero source, Hero target) {
+    public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        critical = rounds % 3 == 0 && Map.getInstance().getField(source.getRow(), source.getColumn()) == Constants.ROGUE_LAND_MODIFIER_CHAR;
+        critical = rounds % Constants.CRITICAL_ROUNDS == 0
+                && Map.getInstance().getField(source.getRow(), source.getColumn())
+                == Constants.ROGUE_LAND_MODIFIER_CHAR;
         rounds++;
         target.receive(this);
     }

@@ -15,42 +15,42 @@ public class Knight extends Hero {
     }
 
     public void receive(Fireblast fireblast) {
-        multiplier = 1.2f;
+        multiplier = Constants.KNIGHT_MODIFIER_FIREBLAST;
         super.receive(fireblast);
     }
 
     public void receive(Ignite ignite) {
-        multiplier = 1.2f;
+        multiplier = Constants.KNIGHT_MODIFIER_IGNITE;
         super.receive(ignite);
     }
 
     public void receive(Execute execute) {
-        multiplier = 1f;
+        multiplier = Constants.KNIGHT_MODIFIER_EXECUTE;
         super.receive(execute);
     }
 
     public void receive(Slam slam) {
-        multiplier = 1.2f;
+        multiplier = Constants.KNIGHT_MODIFIER_SLAM;
         super.receive(slam);
     }
 
     public void receive(Drain drain) {
-        multiplier = 1.2f;
+        multiplier = Constants.KNIGHT_MODIFIER_DRAIN;
         super.receive(drain);
     }
 
     public void receive(Deflect deflect) {
-        multiplier = 1.4f;
+        multiplier = Constants.KNIGHT_MODIFIER_DEFLECT;
         super.receive(deflect);
     }
 
     public void receive(Backstab backstab) {
-        multiplier = 0.9f;
+        multiplier = Constants.KNIGHT_MODIFIER_BACKSTAB;
         super.receive(backstab);
     }
 
     public void receive(Paralysis paralysis) {
-        multiplier = 0.8f;
+        multiplier = Constants.KNIGHT_MODIFIER_PARALYSIS;
         super.receive(paralysis);
     }
 

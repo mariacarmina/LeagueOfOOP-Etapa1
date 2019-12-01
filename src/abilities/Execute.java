@@ -1,5 +1,6 @@
 package abilities;
 
+import common.Constants;
 import heroes.Hero;
 
 public class Execute extends Ability {
@@ -10,11 +11,11 @@ public class Execute extends Ability {
     private float maximumHPLimit;
 
     public Execute() {
-        baseDamage = 200f;
-        perLevelDamage = 30f;
-        baseHPLimit = 0.2f;
-        perLevelHPLimit = 0.01f;
-        maximumHPLimit = 0.4f;
+        baseDamage = Constants.BASE_DAMAGE_EXECUTE;
+        perLevelDamage = Constants.PER_LEVEL_BASE_DAMAGE_EXECUTE;
+        baseHPLimit = Constants.BASE_LIMIT_HP_EXECUTE;
+        perLevelHPLimit = Constants.PER_LEVEL_LIMIT_HP_EXECUTE;
+        maximumHPLimit = Constants.MAXIMUM_HP_EXECUTE;
     }
 
     public float getDamage() {
@@ -25,7 +26,7 @@ public class Execute extends Ability {
         return Math.min(maximumHPLimit, baseHPLimit + level * perLevelHPLimit);
     }
 
-    public void cast(Hero source, Hero target) {
+    public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
         target.receive(this);

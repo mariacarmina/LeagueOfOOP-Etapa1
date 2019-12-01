@@ -44,13 +44,13 @@ public abstract class Hero {
 
 
     public void moveHero(char move) {
-        if (move == 'U') {
+        if (move == Constants.UP) {
             row--;
-        } else if (move == 'D') {
+        } else if (move == Constants.DOWN) {
             row++;
-        } else if (move == 'L') {
+        } else if (move == Constants.LEFT) {
             column--;
-        } else if (move == 'R') {
+        } else if (move == Constants.RIGHT) {
             column++;
         }
     }
@@ -84,7 +84,7 @@ public abstract class Hero {
     }
 
     public int needToLevel() {
-        return 250 + level * 50;
+        return Constants.XP_LVL_1 + level * Constants.PER_LEVEL_XP;
     }
 
     public void levelUp() {
@@ -126,7 +126,7 @@ public abstract class Hero {
     }
 
     public void receive(Drain drain) {
-        float drainHP = Math.min(0.3f * getMaxHP(), currentHP);
+        float drainHP = Math.min(Constants.MULTIPLIER_HP_DRAIN * getMaxHP(), currentHP);
         baseTakenDamage += Math.round(drain.getDamage(drainHP));
         takenDamage += Math.round(multiplier * drain.getDamage(drainHP));
     }
@@ -144,7 +144,8 @@ public abstract class Hero {
     public void receive(Paralysis paralysis) {
         baseTakenDamage += Math.round(paralysis.getDamage());
         takenDamage += Math.round(multiplier * paralysis.getDamage());
-        setEffect(paralysis.getRounds(), Math.round(multiplier * paralysis.getRoundDamage()), true);
+        setEffect(paralysis.getRounds(), Math.round(multiplier * paralysis.getRoundDamage()),
+                true);
     }
 
     public void resetFight() {

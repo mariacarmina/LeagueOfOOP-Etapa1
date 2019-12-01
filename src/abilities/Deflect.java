@@ -1,5 +1,6 @@
 package abilities;
 
+import common.Constants;
 import heroes.Hero;
 
 public class Deflect extends Ability {
@@ -9,16 +10,17 @@ public class Deflect extends Ability {
     private float receivedDamage;
 
     public Deflect() {
-        basePercentage = 0.35f;
-        perLevelPercentage = 0.02f;
-        maximumPercentage = 0.7f;
+        basePercentage = Constants.BASE_DAMAGE_DEFLECT;
+        perLevelPercentage = Constants.PER_LEVEL_BASE_DAMAGE_DEFLECT;
+        maximumPercentage = Constants.MAXIMUM_PERCENTAGE;
     }
 
     public float getDamage() {
-        return multiplier * Math.min(basePercentage + level * perLevelPercentage, maximumPercentage) * receivedDamage;
+        return multiplier * Math.min(basePercentage + level * perLevelPercentage,
+                maximumPercentage) * receivedDamage;
     }
 
-    public void cast(Hero source, Hero target) {
+    public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
         receivedDamage = source.getBaseTakenDamage();

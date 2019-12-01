@@ -16,42 +16,42 @@ public class Pyromancer extends Hero {
     }
 
     public void receive(Fireblast fireblast) {
-        multiplier = 0.9f;
+        multiplier = Constants.PYROMANCER_MODIFIER_FIREBLAST;
         super.receive(fireblast);
     }
 
     public void receive(Ignite ignite) {
-        multiplier = 0.9f;
+        multiplier = Constants.PYROMANCER_MODIFIER_IGNITE;
         super.receive(ignite);
     }
 
     public void receive(Execute execute) {
-        multiplier = 1.1f;
+        multiplier = Constants.PYROMANCER_MODIFIER_EXECUTE;
         super.receive(execute);
     }
 
     public void receive(Slam slam) {
-        multiplier = 0.9f;
+        multiplier = Constants.PYROMANCER_MODIFIER_SLAM;
         super.receive(slam);
     }
 
     public void receive(Drain drain) {
-        multiplier = 0.9f;
+        multiplier = Constants.PYROMANCER_MODIFIER_DRAIN;
         super.receive(drain);
     }
 
     public void receive(Deflect deflect) {
-        multiplier = 1.3f;
+        multiplier = Constants.PYROMANCER_MODIFIER_DEFLECT;
         super.receive(deflect);
     }
 
     public void receive(Backstab backstab) {
-        multiplier = 1.25f;
+        multiplier = Constants.PYROMANCER_MODIFIER_BACKSTAB;
         super.receive(backstab);
     }
 
     public void receive(Paralysis paralysis) {
-        multiplier = 1.2f;
+        multiplier = Constants.PYROMANCER_MODIFIER_PARALYSIS;
         super.receive(paralysis);
     }
 

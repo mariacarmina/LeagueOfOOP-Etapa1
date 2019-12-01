@@ -1,5 +1,6 @@
 package abilities;
 
+import common.Constants;
 import heroes.Hero;
 
 public class Drain extends Ability {
@@ -7,15 +8,15 @@ public class Drain extends Ability {
     private float perLevelPercentage;
 
     public Drain() {
-        basePercentage = 0.2f;
-        perLevelPercentage = 0.05f;
+        basePercentage = Constants.BASE_DAMAGE_DRAIN;
+        perLevelPercentage = Constants.PER_LEVEL_BASE_DAMAGE_DRAIN;
     }
 
     public float getDamage(float opponentHP) {
         return multiplier * (basePercentage + level * perLevelPercentage) * opponentHP;
     }
 
-    public void cast(Hero source, Hero target) {
+    public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
         target.receive(this);

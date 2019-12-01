@@ -12,11 +12,11 @@ public class Paralysis extends Ability {
     private int rounds;
 
     public Paralysis() {
-        baseDamage = 40f;
-        perLevelDamage = 10f;
-        baseRoundDamage = 40f;
-        perLevelRoundDamage = 10f;
-        rounds = 3;
+        baseDamage = Constants.BASE_DAMAGE_PARALYSIS;
+        perLevelDamage = Constants.PER_LEVEL_BASE_DAMAGE_PARALYSIS;
+        baseRoundDamage = Constants.DAMAGE_PER_ROUND_PARALYSIS;
+        perLevelRoundDamage = Constants.PER_LEVEL_DAMAGE_PER_ROUND_PARALYSIS;
+        rounds = Constants.PARALYSIS_ROUNDS;
     }
 
     public float getDamage() {
@@ -31,11 +31,12 @@ public class Paralysis extends Ability {
         return rounds;
     }
 
-    public void cast(Hero source, Hero target) {
+    public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        rounds = 3;
-        if (Map.getInstance().getField(source.getRow(), source.getColumn()) == Constants.ROGUE_LAND_MODIFIER_CHAR) {
+        rounds = Constants.PARALYSIS_ROUNDS;
+        if (Map.getInstance().getField(source.getRow(), source.getColumn())
+                == Constants.ROGUE_LAND_MODIFIER_CHAR) {
             rounds *= 2;
         }
         target.receive(this);

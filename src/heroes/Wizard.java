@@ -16,27 +16,27 @@ public class Wizard extends Hero {
     }
 
     public void receive(Fireblast fireblast) {
-        multiplier = 1.05f;
+        multiplier = Constants.WIZARD_MODIFIER_FIREBLAST;
         super.receive(fireblast);
     }
 
     public void receive(Ignite ignite) {
-        multiplier = 1.05f;
+        multiplier = Constants.WIZARD_MODIFIER_IGNITE;
         super.receive(ignite);
     }
 
     public void receive(Execute execute) {
-        multiplier = 0.8f;
+        multiplier = Constants.WIZARD_MODIFIER_EXECUTE;
         super.receive(execute);
     }
 
     public void receive(Slam slam) {
-        multiplier = 1.05f;
+        multiplier = Constants.WIZARD_MODIFIER_SLAM;
         super.receive(slam);
     }
 
     public void receive(Drain drain) {
-        multiplier = 1.05f;
+        multiplier = Constants.WIZARD_MODIFIER_DRAIN;
         super.receive(drain);
     }
 
@@ -44,12 +44,12 @@ public class Wizard extends Hero {
     }
 
     public void receive(Backstab backstab) {
-        multiplier = 1.25f;
+        multiplier = Constants.WIZARD_MODIFIER_BACKSTAB;
         super.receive(backstab);
     }
 
     public void receive(Paralysis paralysis) {
-        multiplier = 1.25f;
+        multiplier = Constants.WIZARD_MODIFIER_PARALYSIS;
         super.receive(paralysis);
     }
 
