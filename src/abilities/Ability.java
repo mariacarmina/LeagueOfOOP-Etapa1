@@ -6,11 +6,19 @@ public abstract class Ability {
     public int level;
     public float multiplier;
 
-    public void setLevel(int level) {
+    /**
+     * @param level setter pentru nivelul atacatorului
+     */
+    public void setLevel(final int level) {
         this.level = level;
     }
 
-    public void setMultiplier(float multiplier) {
+    /**
+     *
+     * @param multiplier
+     * setter pentru modificatorul de teren
+     */
+    public void setMultiplier(final float multiplier) {
         this.multiplier = multiplier;
     }
 

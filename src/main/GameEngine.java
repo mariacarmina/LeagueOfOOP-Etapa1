@@ -13,11 +13,24 @@ public class GameEngine {
     private ArrayList<Hero> heroes;
     private ArrayList<String> moves;
 
-    public GameEngine(GameInput gameInput) {
+    public GameEngine(final GameInput gameInput) {
         Map.getInstance().setMap(gameInput.getMap());
         heroes = gameInput.getHeroes();
         moves = gameInput.getMoves();
     }
+
+    /**
+     * @param hero1
+     * @param hero2 aceasta metoda reda lupta dintre doi jucatori
+     *              daca primul jucator care se lupta este Wizard, il interschimbam cu cel
+     *              de-al doilea jucator pentru a putea prelua damage-ul primit de la acesta
+     *              apoi se reseteaza damage-urile fiecaruia la 0
+     *              se parcurg listele de abilitati ale fiecarui jucator si se aplica
+     *              fiecare abilitate prin metoda cast() din clasele specifice
+     *              abilitatilor folosite, practic cei doi oponenti se lupta
+     *              folosindu-si fiecare abilitatile
+     *              daca unul dintre acestia moare, celalalt devine invingator si primeste XP
+     */
 
     public void battle(Hero hero1, Hero hero2) {
         if (hero1 instanceof Wizard) {
@@ -43,6 +56,13 @@ public class GameEngine {
         }
     }
 
+    /**
+     * se implementeaza logica jocului.
+     * jucatorii fac simultan o mutare atata timp cat nu sunt imobilizati sau morti.
+     * se stabilesc efectele overtime.
+     * atata timp cat ambii jucatorii sunt vii si cat timp se afla pe acelasi teren, se lupta.
+     */
+
     public void playGame() {
         for (int i = 0; i < moves.size(); ++i) {
             for (int j = 0; j < heroes.size(); ++j) {
@@ -63,7 +83,14 @@ public class GameEngine {
         }
     }
 
-    public void print(String outputFile) throws IOException {
+    /**
+     *
+     * @param outputFile
+     * @throws IOException
+     * afiseaza stats-urile jucatorilor
+     */
+
+    public void print(final String outputFile) throws IOException {
         BufferedWriter out = new BufferedWriter(new FileWriter(outputFile));
         for (Hero hero : heroes) {
             hero.print(out);

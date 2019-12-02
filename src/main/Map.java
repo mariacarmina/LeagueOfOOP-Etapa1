@@ -2,7 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
-public class Map {
+public final class Map {
 
     private static Map instance = null;
     private ArrayList<String> map;
@@ -13,7 +13,7 @@ public class Map {
 
     public static Map getInstance() {
         if (instance == null) {
-            instance = new Map();
+            instance = new main.Map();
         }
         return instance;
     }
@@ -22,11 +22,11 @@ public class Map {
         return map;
     }
 
-    public void setMap(ArrayList<String> map) {
+    public void setMap(final ArrayList<String> map) {
         this.map = map;
     }
 
-    public char getField(int row, int column) {
+    public char getField(final int row, final int column) {
         return map.get(row).charAt(column);
     }
 }

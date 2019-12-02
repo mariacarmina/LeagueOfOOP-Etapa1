@@ -1,7 +1,6 @@
 package common;
 
-public class Constants {
-
+public final class Constants {
 
     //Moves
     public static final char UP = 'U';
@@ -26,7 +25,8 @@ public class Constants {
     //XP
     public static final int XP_LVL_1 = 250;
     public static final int PER_LEVEL_XP = 50;
-
+    public static final int XP_WINNER = 200;
+    public static final int MULTIPLIER_XP_WINNER = 40;
 
     //Land modifiers characters
     public static final char PYROMANCER_LAND_MODIFIER_CHAR = 'V';
@@ -70,7 +70,6 @@ public class Constants {
     public static final float PER_LEVEL_DAMAGE_PER_ROUND_IGNITE = 30f;
     public static final float PER_LEVEL_DAMAGE_PER_ROUND_PARALYSIS = 10f;
     public static final float BONUS_CRITICAL = 1.5f;
-
 
     //Race modifier for Fireblast
     public static final float ROGUE_MODIFIER_FIREBLAST = 0.8f;
@@ -123,4 +122,6 @@ public class Constants {
     public static final int CRITICAL_ROUNDS = 3;
     public static final int PARALYSIS_ROUNDS = 3;
 
+    private Constants() {
+    }
 }

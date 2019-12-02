@@ -1,7 +1,14 @@
 package heroes;
 
 
-import abilities.*;
+import abilities.Backstab;
+import abilities.Deflect;
+import abilities.Drain;
+import abilities.Execute;
+import abilities.Fireblast;
+import abilities.Ignite;
+import abilities.Paralysis;
+import abilities.Slam;
 import common.Constants;
 import main.Map;
 
@@ -9,58 +16,108 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class Wizard extends Hero {
-    public Wizard(int row, int column) {
+    public Wizard(final int row, final int column) {
         super(row, column, Constants.WIZARD_HP, Constants.WIZARD_EXTRA_HP);
         abilities.add(new Drain());
         abilities.add(new Deflect());
     }
 
-    public void receive(Fireblast fireblast) {
+    /**
+     * @param fireblast se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
+     *                  se apeleaza metoda de receive din Hero.
+     */
+
+    public void receive(final Fireblast fireblast) {
         multiplier = Constants.WIZARD_MODIFIER_FIREBLAST;
         super.receive(fireblast);
     }
 
-    public void receive(Ignite ignite) {
+    /**
+     * @param ignite se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
+     *               se apeleaza metoda de receive din Hero.
+     */
+
+    public void receive(final Ignite ignite) {
         multiplier = Constants.WIZARD_MODIFIER_IGNITE;
         super.receive(ignite);
     }
 
-    public void receive(Execute execute) {
+    /**
+     * @param execute se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
+     *                se apeleaza metoda de receive din Hero.
+     */
+
+    public void receive(final Execute execute) {
         multiplier = Constants.WIZARD_MODIFIER_EXECUTE;
         super.receive(execute);
     }
 
-    public void receive(Slam slam) {
+    /**
+     * @param slam se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
+     *             se apeleaza metoda de receive din Hero.
+     */
+
+    public void receive(final Slam slam) {
         multiplier = Constants.WIZARD_MODIFIER_SLAM;
         super.receive(slam);
     }
 
-    public void receive(Drain drain) {
+    /**
+     * @param drain se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
+     *              se apeleaza metoda de receive din Hero.
+     */
+
+    public void receive(final Drain drain) {
         multiplier = Constants.WIZARD_MODIFIER_DRAIN;
         super.receive(drain);
     }
 
-    public void receive(Deflect deflect) {
+    /**
+     * @param deflect nu se aplica jucatorului de tip Wizard
+     */
+
+    public void receive(final Deflect deflect) {
     }
 
-    public void receive(Backstab backstab) {
+    /**
+     * @param backstab se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
+     *                 se apeleaza metoda de receive din Hero.
+     */
+
+    public void receive(final Backstab backstab) {
         multiplier = Constants.WIZARD_MODIFIER_BACKSTAB;
         super.receive(backstab);
     }
 
-    public void receive(Paralysis paralysis) {
+    /**
+     * @param paralysis se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
+     *                  se apeleaza metoda de receive din Hero.
+     */
+
+    public void receive(final Paralysis paralysis) {
         multiplier = Constants.WIZARD_MODIFIER_PARALYSIS;
         super.receive(paralysis);
     }
 
+    /**
+     * @return landModifier
+     * returneaza modificatorul specific terenului unde are loc lupta
+     */
+
     public float getLandModifier() {
-        if (Map.getInstance().getField(this.row, this.column) == Constants.WIZARD_LAND_MODIFIER_CHAR) {
+        if (Map.getInstance().getField(this.row, this.column)
+                == Constants.WIZARD_LAND_MODIFIER_CHAR) {
             return Constants.WIZARD_LAND_MODIFIER_BONUS;
         }
         return Constants.STANDARD_LAND_MODIFIER_BONUS;
     }
 
-    public void print(BufferedWriter out) throws IOException {
+    /**
+     * @param out
+     * @throws IOException afiseaza stats-urile jucatorului
+     */
+
+    public void print(final BufferedWriter out) throws IOException {
         if (this.isDead()) {
             out.write("W " + "dead");
             out.newLine();

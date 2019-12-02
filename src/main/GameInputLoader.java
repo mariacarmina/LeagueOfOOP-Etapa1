@@ -10,11 +10,16 @@ import java.util.Scanner;
 
 public class GameInputLoader {
 
-    File inputFile;
+    private File inputFile;
 
-    public GameInputLoader(String inputFileName) {
+    public GameInputLoader(final String inputFileName) {
         inputFile = new File(inputFileName);
     }
+
+    /**
+     * @return
+     * @throws FileNotFoundException se realizeaza citirea datelor in fisier
+     */
 
     public GameInput load() throws FileNotFoundException {
         int rows;

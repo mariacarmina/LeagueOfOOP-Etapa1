@@ -10,7 +10,8 @@ public final class HeroFactory {
         return instance;
     }
 
-    public Hero getHeroByType(String heroType, int positionRow, int positionColumn) {
+    public Hero getHeroByType(final String heroType, final int positionRow,
+                              final int positionColumn) {
         if (heroType.equals("P")) {
             return new Pyromancer(positionRow, positionColumn);
         } else if (heroType.equals("K")) {

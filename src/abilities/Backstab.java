@@ -16,6 +16,11 @@ public class Backstab extends Ability {
         perLevelDamage = Constants.PER_LEVEL_BASE_DAMAGE_BACKSTAB;
     }
 
+    /**
+     * @return result
+     * returneaza damage-ul acestei abilitati cu posibilitate de critical hit cand este cazul,
+     * fara modificatori de rasa.
+     */
     public float getDamage() {
         float result = (baseDamage + level * perLevelDamage);
         result *= multiplier;
@@ -25,6 +30,18 @@ public class Backstab extends Ability {
         return result;
     }
 
+    /**
+     *
+     * @param source
+     * reprezinta jucatorul care dispune de aceasta abilitate
+     * @param target
+     * reprezinta jucatorul atacat
+     * metoda reprezinta atacul lui source asupra lui target
+     * target apeleaza metoda de receive din clasa specifica de erou,
+     * unde se adauga modificatorul de rasa.
+     * primeste bonus de critical hit o data la trei runde
+     * daca source se afla pe teren de Woods
+     */
     public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
