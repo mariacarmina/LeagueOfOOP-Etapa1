@@ -1,5 +1,7 @@
 package main;
 
+import angels.Angel;
+import angels.AngelFactory;
 import heroes.Hero;
 import heroes.HeroFactory;
 
@@ -29,7 +31,9 @@ public class GameInputLoader {
         ArrayList<Hero> heroes = new ArrayList<Hero>();
         int numRounds;
         ArrayList<String> moves = new ArrayList<String>();
+        ArrayList<Angel> angels = new ArrayList<Angel>();
         Scanner input = new Scanner(inputFile);
+        input.useDelimiter(", * \n \r");
 
         rows = input.nextInt();
         columns = input.nextInt();
@@ -47,6 +51,15 @@ public class GameInputLoader {
         for (int i = 0; i < numRounds; ++i) {
             moves.add(input.next());
         }
-        return new GameInput(map, heroes, moves);
+        for (int i = 0; i < numRounds; ++i) {
+            int numAngels = input.nextInt();
+            String angelType = input.next();
+            int positionRow = input.nextInt();
+            int positionColumn = input.nextInt();
+            for (int j = 0; j < numAngels; ++j) {
+                angels.add(AngelFactory.getInstance().getAngelByType(angelType, positionRow, positionColumn));
+            }
+        }
+        return new GameInput(map, heroes, moves, angels);
     }
 }
