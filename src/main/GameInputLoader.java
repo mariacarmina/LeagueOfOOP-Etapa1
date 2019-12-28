@@ -33,7 +33,7 @@ public class GameInputLoader {
         ArrayList<String> moves = new ArrayList<String>();
         ArrayList<Angel> angels = new ArrayList<Angel>();
         Scanner input = new Scanner(inputFile);
-        input.useDelimiter(", * \n \r");
+        input.useDelimiter(", \n\r");
 
         rows = input.nextInt();
         columns = input.nextInt();
