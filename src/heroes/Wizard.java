@@ -30,6 +30,7 @@ public class Wizard extends Hero {
         super(row, column, Constants.WIZARD_HP, Constants.WIZARD_EXTRA_HP);
         abilities.add(new Drain());
         abilities.add(new Deflect());
+        heroStrategy = new WizardStrategy();
     }
 
     @Override

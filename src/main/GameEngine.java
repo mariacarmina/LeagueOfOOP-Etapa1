@@ -1,6 +1,7 @@
 package main;
 
 import abilities.Ability;
+import angels.Angel;
 import heroes.Hero;
 import heroes.Wizard;
 
@@ -12,11 +13,15 @@ import java.util.ArrayList;
 public class GameEngine {
     private ArrayList<Hero> heroes;
     private ArrayList<String> moves;
+    private ArrayList<Angel> angels;
+    private ArrayList<Integer> angelsSizes;
 
     public GameEngine(final GameInput gameInput) {
         Map.getInstance().setMap(gameInput.getMap());
         heroes = gameInput.getHeroes();
         moves = gameInput.getMoves();
+        angels = gameInput.getAngels();
+        angelsSizes = gameInput.getAngelsSizes();
     }
 
     /**
@@ -64,9 +69,11 @@ public class GameEngine {
      */
 
     public void playGame() {
+        int angelOffset = 0;
         for (int i = 0; i < moves.size(); ++i) {
             for (int j = 0; j < heroes.size(); ++j) {
                 if (!heroes.get(j).isStunned() && !heroes.get(j).isDead()) {
+                    heroes.get(j).chooseStrategy();
                     heroes.get(j).moveHero(moves.get(i).charAt(j));
                 }
                 heroes.get(j).sufferEffect();
@@ -80,6 +87,14 @@ public class GameEngine {
                     }
                 }
             }
+            for (int j = angelOffset; j < angelOffset + angelsSizes.get(i); ++j) {
+                for (int k = 0; k < heroes.size(); ++k) {
+                    if (!heroes.get(k).isDead() && heroes.get(k).isAngelHere(angels.get(j))) {
+                        //observer.update(...)
+                    }
+                }
+            }
+            angelOffset += angelsSizes.get(i);
         }
     }
 

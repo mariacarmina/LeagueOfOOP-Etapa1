@@ -30,6 +30,7 @@ public class Knight extends Hero {
         super(row, column, Constants.KNIGHT_HP, Constants.KNIGHT_EXTRA_HP);
         abilities.add(new Execute());
         abilities.add(new Slam());
+        heroStrategy = new KnightStrategy();
     }
 
     @Override

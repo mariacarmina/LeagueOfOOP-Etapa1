@@ -10,13 +10,15 @@ public class GameInput {
     private ArrayList<Hero> heroes;
     private ArrayList<String> moves;
     private ArrayList<Angel> angels;
+    private ArrayList<Integer> angelsSizes;
 
     public GameInput(final ArrayList<String> map, final ArrayList<Hero> heroes,
-                     final ArrayList<String> moves, final ArrayList<Angel> angels) {
+                     final ArrayList<String> moves, final ArrayList<Angel> angels, final ArrayList<Integer> angelsSizes) {
         this.map = map;
         this.heroes = heroes;
         this.moves = moves;
         this.angels = angels;
+        this.angelsSizes = angelsSizes;
     }
 
     /**
@@ -84,5 +86,13 @@ public class GameInput {
 
     public void setAngels(ArrayList<Angel> angels) {
         this.angels = angels;
+    }
+
+    public ArrayList<Integer> getAngelsSizes() {
+        return angelsSizes;
+    }
+
+    public void setAngelsSizes(ArrayList<Integer> angelsSizes) {
+        this.angelsSizes = angelsSizes;
     }
 }

@@ -32,7 +32,7 @@ public class Drain extends Ability {
     public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        source.setAngelMultiplier(source.getAngelMultiplier());
+        //source.setAngelMultiplier(source.getAngelMultiplier());
         target.receive(this);
     }
 }

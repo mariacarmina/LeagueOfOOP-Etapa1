@@ -30,6 +30,7 @@ public class Pyromancer extends Hero {
         super(row, column, Constants.PYROMANCER_HP, Constants.PYROMANCER_EXTRA_HP);
         abilities.add(new Fireblast());
         abilities.add(new Ignite());
+        heroStrategy = new PyromancerStrategy();
     }
 
     @Override

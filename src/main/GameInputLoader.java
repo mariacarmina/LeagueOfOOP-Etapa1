@@ -32,6 +32,7 @@ public class GameInputLoader {
         int numRounds;
         ArrayList<String> moves = new ArrayList<String>();
         ArrayList<Angel> angels = new ArrayList<Angel>();
+        ArrayList<Integer> angelsSizes = new ArrayList<>();
         Scanner input = new Scanner(inputFile);
         input.useDelimiter(", \n\r");
 
@@ -53,13 +54,14 @@ public class GameInputLoader {
         }
         for (int i = 0; i < numRounds; ++i) {
             int numAngels = input.nextInt();
-            String angelType = input.next();
-            int positionRow = input.nextInt();
-            int positionColumn = input.nextInt();
+            angelsSizes.add(numAngels);
             for (int j = 0; j < numAngels; ++j) {
+                String angelType = input.next();
+                int positionRow = input.nextInt();
+                int positionColumn = input.nextInt();
                 angels.add(AngelFactory.getInstance().getAngelByType(angelType, positionRow, positionColumn));
             }
         }
-        return new GameInput(map, heroes, moves, angels);
+        return new GameInput(map, heroes, moves, angels, angelsSizes);
     }
 }

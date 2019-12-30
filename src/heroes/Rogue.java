@@ -30,6 +30,7 @@ public class Rogue extends Hero {
         super(row, column, Constants.ROGUE_HP, Constants.ROGUE_EXTRA_HP);
         abilities.add(new Backstab());
         abilities.add(new Paralysis());
+        heroStrategy = new RogueStrategy();
     }
 
     @Override

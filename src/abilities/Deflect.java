@@ -38,7 +38,7 @@ public class Deflect extends Ability {
     public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        source.setAngelMultiplier(source.getAngelMultiplier());
+        //source.setAngelMultiplier(source.getAngelMultiplier());
         receivedDamage = source.getBaseTakenDamage();
         target.receive(this);
     }

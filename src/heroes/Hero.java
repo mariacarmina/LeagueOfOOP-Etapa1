@@ -10,6 +10,7 @@ import abilities.Fireblast;
 import abilities.Ignite;
 import abilities.Paralysis;
 import abilities.Slam;
+import angels.Angel;
 import angels.DamageAngel;
 import angels.DarkAngel;
 import angels.Dracula;
@@ -43,6 +44,8 @@ public abstract class Hero {
     protected ArrayList<Ability> abilities;
     protected float multiplier;
     protected float angelMultiplier;
+    protected float strategyMultiplier;
+    protected HeroStrategy heroStrategy;
 
     public Hero(final int row, final int column, final int baseHP, final int perLevelHP) {
         this.row = row;
@@ -59,9 +62,9 @@ public abstract class Hero {
         this.takenDamage = 0;
         this.baseTakenDamage = 0;
         this.abilities = new ArrayList<Ability>();
-        this.angelMultiplier = 1f;
+        this.angelMultiplier = 0f;
+        this.strategyMultiplier = 0f;
     }
-
 
     /**
      * @param move aceasta metoda realizeaza mutarea jucatorului pe harta
@@ -181,11 +184,8 @@ public abstract class Hero {
 
     public void receive(final Fireblast fireblast) {
         baseTakenDamage += Math.round(fireblast.getDamage());
-
-        // ANDREI
-        // takenDamage += Math.round((multiplier) * fireblast.getDamage());
-
-        takenDamage += Math.round((multiplier + angelMultiplier) * fireblast.getDamage());
+        takenDamage += Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * fireblast.getDamage());
     }
 
     /**
@@ -200,8 +200,10 @@ public abstract class Hero {
 
     public void receive(final Ignite ignite) {
         baseTakenDamage += Math.round(ignite.getDamage());
-        takenDamage += Math.round((multiplier + angelMultiplier) * ignite.getDamage());
-        setEffect(2, Math.round((multiplier + angelMultiplier) * ignite.getRoundDamage()), false);
+        takenDamage += Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * ignite.getDamage());
+        setEffect(2, Math.round((multiplier + strategyMultiplier + angelMultiplier)
+                * ignite.getRoundDamage()), false);
     }
 
     /**
@@ -218,7 +220,8 @@ public abstract class Hero {
             takenDamage += currentHP;
         } else {
             baseTakenDamage += Math.round(execute.getDamage());
-            takenDamage += Math.round((multiplier + angelMultiplier) * execute.getDamage());
+            takenDamage += Math.round(
+                    (multiplier + strategyMultiplier + angelMultiplier) * execute.getDamage());
         }
     }
 
@@ -233,7 +236,8 @@ public abstract class Hero {
 
     public void receive(final Slam slam) {
         baseTakenDamage += Math.round(slam.getDamage());
-        takenDamage += Math.round((multiplier + angelMultiplier) * slam.getDamage());
+        takenDamage += Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * slam.getDamage());
         setEffect(1, 0, true);
     }
 
@@ -246,7 +250,8 @@ public abstract class Hero {
     public void receive(final Drain drain) {
         float drainHP = getDrainHP();
         baseTakenDamage += Math.round(drain.getDamage(drainHP));
-        takenDamage += Math.round(multiplier * drain.getDamage(drainHP));
+        takenDamage += Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * drain.getDamage(drainHP));
     }
 
     /**
@@ -258,7 +263,8 @@ public abstract class Hero {
 
     public void receive(final Deflect deflect) {
         baseTakenDamage += Math.round(deflect.getDamage());
-        takenDamage += Math.round(multiplier * deflect.getDamage());
+        takenDamage += Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * deflect.getDamage());
     }
 
     /**
@@ -270,7 +276,8 @@ public abstract class Hero {
 
     public void receive(final Backstab backstab) {
         baseTakenDamage += Math.round(backstab.getDamage());
-        takenDamage += Math.round(multiplier * backstab.getDamage());
+        takenDamage += Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * backstab.getDamage());
     }
 
     /**
@@ -285,8 +292,10 @@ public abstract class Hero {
 
     public void receive(final Paralysis paralysis) {
         baseTakenDamage += Math.round(paralysis.getDamage());
-        takenDamage += Math.round(multiplier * paralysis.getDamage());
-        setEffect(paralysis.getRounds(), Math.round(multiplier * paralysis.getRoundDamage()),
+        takenDamage += Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * paralysis.getDamage());
+        setEffect(paralysis.getRounds(), Math.round(
+                (multiplier + strategyMultiplier + angelMultiplier) * paralysis.getRoundDamage()),
                 true);
     }
 
@@ -325,8 +334,12 @@ public abstract class Hero {
      * @return verifica daca doi eroi se afla pe acelasi teren
      */
 
-    public boolean isHere(final heroes.Hero h1) {
+    public boolean isHere(final Hero h1) {
         return (this.row == h1.row) && (this.column == h1.column);
+    }
+
+    public boolean isAngelHere(final Angel angel) {
+        return (this.row == angel.getRow()) && (this.column == angel.getColumn());
     }
 
     /**
@@ -436,5 +449,17 @@ public abstract class Hero {
     public abstract void accept(TheDoomer theDoomer);
 
     public abstract void accept(XPAngel xpAngel);
+
+    public float getStrategyMultiplier() {
+        return strategyMultiplier;
+    }
+
+    public void setStrategyMultiplier(float strategyMultiplier) {
+        this.strategyMultiplier = strategyMultiplier;
+    }
+
+    public void chooseStrategy() {
+        heroStrategy.choose(this);
+    }
 }
 
