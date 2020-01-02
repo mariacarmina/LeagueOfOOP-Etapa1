@@ -4,6 +4,7 @@ import abilities.Ability;
 import angels.Angel;
 import heroes.Hero;
 import heroes.Wizard;
+import observer.Observer;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -15,6 +16,7 @@ public class GameEngine {
     private ArrayList<String> moves;
     private ArrayList<Angel> angels;
     private ArrayList<Integer> angelsSizes;
+    private Observer observer;
 
     public GameEngine(final GameInput gameInput) {
         Map.getInstance().setMap(gameInput.getMap());
@@ -48,11 +50,11 @@ public class GameEngine {
         for (Ability ability : hero1.getAbilities()) {
             ability.cast(hero1, hero2);
         }
-        hero2.takeDamage();
+        hero2.takeDamage(hero1);
         for (Ability ability : hero2.getAbilities()) {
             ability.cast(hero2, hero1);
         }
-        hero1.takeDamage();
+        hero1.takeDamage(hero2);
         if (!hero1.isDead() && hero2.isDead()) {
             hero1.gainXP(hero2.getLevel());
         }
@@ -88,9 +90,13 @@ public class GameEngine {
                 }
             }
             for (int j = angelOffset; j < angelOffset + angelsSizes.get(i); ++j) {
+                angels.get(j).spawned();
                 for (int k = 0; k < heroes.size(); ++k) {
                     if (!heroes.get(k).isDead() && heroes.get(k).isAngelHere(angels.get(j))) {
-                        //observer.update(...)
+                        heroes.get(k).accept(angels.get(j));
+                    } else if (angels.get(j).getAngelType().equals("Spawner")
+                            && heroes.get(k).isAngelHere(angels.get(j))) {
+                        heroes.get(k).accept(angels.get(j));
                     }
                 }
             }

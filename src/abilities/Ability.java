@@ -6,6 +6,7 @@ public abstract class Ability {
     public int level;
     public float multiplier;
 
+
     /**
      * @param level setter pentru nivelul atacatorului
      */

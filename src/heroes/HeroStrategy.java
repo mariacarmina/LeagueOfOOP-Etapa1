@@ -31,7 +31,7 @@ public abstract class HeroStrategy {
         if (hero.getMaxHP() / minLimit < hero.getCurrentHP()
                 && hero.getCurrentHP() < hero.getMaxHP() / maxLimit) {
             attack(hero);
-        } else if (hero.getCurrentHP() < hero.getMaxHP() / minLimit) {
+        } else if (hero.getCurrentHP() <= hero.getMaxHP() / minLimit) {
             defense(hero);
         }
     }

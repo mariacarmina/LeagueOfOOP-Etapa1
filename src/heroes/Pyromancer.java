@@ -8,80 +8,77 @@ import abilities.Fireblast;
 import abilities.Ignite;
 import abilities.Paralysis;
 import abilities.Slam;
-import angels.DamageAngel;
-import angels.DarkAngel;
-import angels.Dracula;
-import angels.GoodBoy;
-import angels.LevelUpAngel;
-import angels.LifeGiver;
-import angels.SmallAngel;
-import angels.Spawner;
-import angels.TheDoomer;
-import angels.XPAngel;
+import angels.Angel;
 import common.Constants;
 import main.Map;
+import observer.Observer;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class Pyromancer extends Hero {
 
-    public Pyromancer(final int row, final int column) {
-        super(row, column, Constants.PYROMANCER_HP, Constants.PYROMANCER_EXTRA_HP);
+    public Pyromancer(final int row, final int column, final int ID) {
+        super(row, column, Constants.PYROMANCER_HP, Constants.PYROMANCER_EXTRA_HP, "Pyromancer", ID);
         abilities.add(new Fireblast());
         abilities.add(new Ignite());
         heroStrategy = new PyromancerStrategy();
     }
 
     @Override
-    public void accept(DamageAngel damageAngel) {
-        damageAngel.visit(this);
+    public void accept(Angel angel) {
+        angel.visit(this);
     }
 
-    @Override
-    public void accept(DarkAngel darkAngel) {
-        darkAngel.visit(this);
-    }
-
-    @Override
-    public void accept(Dracula dracula) {
-        dracula.visit(this);
-    }
-
-    @Override
-    public void accept(GoodBoy goodBoy) {
-        goodBoy.visit(this);
-    }
-
-    @Override
-    public void accept(LevelUpAngel levelUpAngel) {
-        levelUpAngel.visit(this);
-    }
-
-    @Override
-    public void accept(LifeGiver lifeGiver) {
-        lifeGiver.visit(this);
-    }
-
-    @Override
-    public void accept(SmallAngel smallAngel) {
-        smallAngel.visit(this);
-    }
-
-    @Override
-    public void accept(Spawner spawner) {
-        spawner.visit(this);
-    }
-
-    @Override
-    public void accept(TheDoomer theDoomer) {
-        theDoomer.visit(this);
-    }
-
-    @Override
-    public void accept(XPAngel xpAngel) {
-        xpAngel.visit(this);
-    }
+//    @Override
+//    public void accept(DamageAngel damageAngel) {
+//        damageAngel.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(DarkAngel darkAngel) {
+//        darkAngel.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(Dracula dracula) {
+//        dracula.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(GoodBoy goodBoy) {
+//        goodBoy.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(LevelUpAngel levelUpAngel) {
+//        levelUpAngel.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(LifeGiver lifeGiver) {
+//        lifeGiver.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(SmallAngel smallAngel) {
+//        smallAngel.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(Spawner spawner) {
+//        spawner.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(TheDoomer theDoomer) {
+//        theDoomer.visit(this);
+//    }
+//
+//    @Override
+//    public void accept(XPAngel xpAngel) {
+//        xpAngel.visit(this);
+//    }
 
     /**
      * @param fireblast se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
@@ -189,6 +186,11 @@ public class Pyromancer extends Hero {
             out.write("P " + level + " " + currentXP + " " + currentHP + " " + row + " " + column);
             out.newLine();
         }
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+
     }
 }
 

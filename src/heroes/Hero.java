@@ -11,23 +11,19 @@ import abilities.Ignite;
 import abilities.Paralysis;
 import abilities.Slam;
 import angels.Angel;
-import angels.DamageAngel;
-import angels.DarkAngel;
-import angels.Dracula;
-import angels.GoodBoy;
-import angels.LevelUpAngel;
-import angels.LifeGiver;
-import angels.SmallAngel;
-import angels.Spawner;
-import angels.TheDoomer;
-import angels.XPAngel;
 import common.Constants;
+import events.Event;
+import events.Kill;
+import events.LevelUp;
+import observer.Observer;
+import observer.Subject;
+import observer.TheGreatestMagician;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public abstract class Hero {
+public abstract class Hero implements Subject {
     protected int row;
     protected int column;
     protected int currentHP;
@@ -46,8 +42,11 @@ public abstract class Hero {
     protected float angelMultiplier;
     protected float strategyMultiplier;
     protected HeroStrategy heroStrategy;
+    protected String heroType;
+    protected int ID;
+    protected Observer observer;
 
-    public Hero(final int row, final int column, final int baseHP, final int perLevelHP) {
+    public Hero(final int row, final int column, final int baseHP, final int perLevelHP, String heroType, int ID) {
         this.row = row;
         this.column = column;
         this.baseHP = baseHP;
@@ -64,6 +63,8 @@ public abstract class Hero {
         this.abilities = new ArrayList<Ability>();
         this.angelMultiplier = 0f;
         this.strategyMultiplier = 0f;
+        this.heroType = heroType;
+        this.ID = ID;
     }
 
     /**
@@ -157,6 +158,8 @@ public abstract class Hero {
     public void levelUp() {
         level++;
         currentHP = getMaxHP();
+        Event levelUp = new LevelUp(heroType, ID, level);
+        updateObserver(levelUp);
     }
 
     /**
@@ -308,17 +311,25 @@ public abstract class Hero {
         baseTakenDamage = 0;
     }
 
+    @Override
+    public void updateObserver(Event event) {
+        TheGreatestMagician.getInstance().update(event);
+    }
+
     /**
      * actualizeaza HP-ul in functie de damage-ul primit in urma unei lupte.
      * daca HP-ul devine mai mic sau egal cu 0, atunci victima a murit.
      */
-
-    public void takeDamage() {
+    // notificare
+    public void takeDamage(Hero killer) {
         currentHP -= takenDamage;
         if (currentHP <= 0) {
+            Event kill = new Kill(this.getHeroType(), this.getID(), killer.getHeroType(), killer.getID());
+            updateObserver(kill);
             dead = true;
         }
     }
+
 
     /**
      * @return level
@@ -430,25 +441,27 @@ public abstract class Hero {
         this.currentXP = currentXP;
     }
 
-    public abstract void accept(DamageAngel damageAngel);
+    public abstract void accept(Angel angel);
 
-    public abstract void accept(DarkAngel darkAngel);
-
-    public abstract void accept(Dracula dracula);
-
-    public abstract void accept(GoodBoy goodBoy);
-
-    public abstract void accept(LevelUpAngel levelUpAngel);
-
-    public abstract void accept(LifeGiver lifeGiver);
-
-    public abstract void accept(SmallAngel smallAngel);
-
-    public abstract void accept(Spawner spawner);
-
-    public abstract void accept(TheDoomer theDoomer);
-
-    public abstract void accept(XPAngel xpAngel);
+//    public abstract void accept(DamageAngel damageAngel);
+//
+//    public abstract void accept(DarkAngel darkAngel);
+//
+//    public abstract void accept(Dracula dracula);
+//
+//    public abstract void accept(GoodBoy goodBoy);
+//
+//    public abstract void accept(LevelUpAngel levelUpAngel);
+//
+//    public abstract void accept(LifeGiver lifeGiver);
+//
+//    public abstract void accept(SmallAngel smallAngel);
+//
+//    public abstract void accept(Spawner spawner);
+//
+//    public abstract void accept(TheDoomer theDoomer);
+//
+//    public abstract void accept(XPAngel xpAngel);
 
     public float getStrategyMultiplier() {
         return strategyMultiplier;
@@ -460,6 +473,19 @@ public abstract class Hero {
 
     public void chooseStrategy() {
         heroStrategy.choose(this);
+    }
+
+    public String getHeroType() {
+        return heroType;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        this.observer = observer;
     }
 }
 
