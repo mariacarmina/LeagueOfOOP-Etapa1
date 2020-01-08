@@ -17,9 +17,7 @@ import events.Kill;
 import events.LevelUp;
 import observer.Observer;
 import observer.Subject;
-import observer.TheGreatestMagician;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,14 +37,16 @@ public abstract class Hero implements Subject {
     protected int baseTakenDamage;
     protected ArrayList<Ability> abilities;
     protected float multiplier;
+    protected boolean unmodified;
     protected float angelMultiplier;
     protected float strategyMultiplier;
     protected HeroStrategy heroStrategy;
     protected String heroType;
-    protected int ID;
+    protected int id;
     protected Observer observer;
 
-    public Hero(final int row, final int column, final int baseHP, final int perLevelHP, String heroType, int ID) {
+    public Hero(final int row, final int column, final int baseHP, final int perLevelHP,
+                final String heroType, final int id) {
         this.row = row;
         this.column = column;
         this.baseHP = baseHP;
@@ -64,7 +64,8 @@ public abstract class Hero implements Subject {
         this.angelMultiplier = 0f;
         this.strategyMultiplier = 0f;
         this.heroType = heroType;
-        this.ID = ID;
+        this.id = id;
+        this.unmodified = true;
     }
 
     /**
@@ -158,7 +159,7 @@ public abstract class Hero implements Subject {
     public void levelUp() {
         level++;
         currentHP = getMaxHP();
-        Event levelUp = new LevelUp(heroType, ID, level);
+        Event levelUp = new LevelUp(heroType, id, level);
         updateObserver(levelUp);
     }
 
@@ -181,14 +182,16 @@ public abstract class Hero implements Subject {
      * @param fireblast primeste ca paramentru abilitatea cu care victima a fost atacata,
      *                  calculandu-se damage-ul fara modificatori de rasa (baseTakenDamage)
      *                  se actualizeaza damage-ul calculat anterior in functie
-     *                  si de amplificatorul de rasa
+     *                  si de amplificatorul de rasa , modificatorul dat de inger(daca exista) si
+     *                  modificatorul de strategie(daca exista)
      *                  (takenDamage)
      */
 
     public void receive(final Fireblast fireblast) {
         baseTakenDamage += Math.round(fireblast.getDamage());
-        takenDamage += Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * fireblast.getDamage());
+        takenDamage += Math.round((multiplier + fireblast.strategyMultiplier
+                + fireblast.angelMultiplier) * Math.round(fireblast.getDamage()));
+
     }
 
     /**
@@ -198,15 +201,17 @@ public abstract class Hero implements Subject {
      *               si de amplificatorul de rasa(takenDamage).
      *               se seteaza efectul de overtime specific abilitatii Ignite,
      *               specificandu-se numarul rundelor si damage-ul per runda amplificat
-     *               si de modificatorul de rasa.
+     *               si de modificatorul de rasa, modificatorul dat de inger(daca exista) si
+     *               modificatorul de strategie(daca exista)(takenDamage)
      */
 
     public void receive(final Ignite ignite) {
         baseTakenDamage += Math.round(ignite.getDamage());
-        takenDamage += Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * ignite.getDamage());
-        setEffect(2, Math.round((multiplier + strategyMultiplier + angelMultiplier)
-                * ignite.getRoundDamage()), false);
+        takenDamage += Math.round(Math.round(ignite.getDamage()) * (multiplier
+                + ignite.strategyMultiplier + ignite.angelMultiplier));
+        setEffect(2, Math.round(Math.round(ignite.getRoundDamage())
+                * (multiplier + ignite.strategyMultiplier
+                + ignite.angelMultiplier)), false);
     }
 
     /**
@@ -215,16 +220,19 @@ public abstract class Hero implements Subject {
      *                pentru ca aceast asa fie omorata.
      *                altfel, se calculeaza damage-ul fara modificatori de rasa (baseTakenDamage)
      *                se actualizeaza damage-ul calculat anterior in functie si
-     *                de amplificatorul de rasa(takenDamage)
+     *                de amplificatorul de rasa, modificatorul dat de inger(daca exista) si
+     *                modificatorul de strategie(daca exista)(takenDamage)
      */
     public void receive(final Execute execute) {
         if (currentHP <= (int) execute.getHPLimit()) {
             baseTakenDamage += currentHP;
             takenDamage += currentHP;
         } else {
+            float newAngelMultiplier = (unmodified
+                    ? execute.strategyMultiplier + execute.angelMultiplier : 0.0f);
             baseTakenDamage += Math.round(execute.getDamage());
-            takenDamage += Math.round(
-                    (multiplier + strategyMultiplier + angelMultiplier) * execute.getDamage());
+            takenDamage += Math.round((multiplier
+                    + newAngelMultiplier) * execute.getDamage());
         }
     }
 
@@ -232,7 +240,8 @@ public abstract class Hero implements Subject {
      * @param slam primeste ca paramentru abilitatea cu care victima a fost atacata,
      *             calculandu-se damage-ul fara modificatori de rasa (baseTakenDamage)
      *             se actualizeaza damage-ul calculat anterior in functie si de
-     *             amplificatorul de rasa(takenDamage)
+     *             amplificatorul de rasa, modificatorul dat de inger(daca exista) si
+     *             modificatorul de strategie(daca exista)(takenDamage)
      *             se seteaza efectul de overtime specific abilitatii Slam,
      *             specificandu-se numarul rundelor si incapacitatea miscarii adversarului
      */
@@ -240,7 +249,7 @@ public abstract class Hero implements Subject {
     public void receive(final Slam slam) {
         baseTakenDamage += Math.round(slam.getDamage());
         takenDamage += Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * slam.getDamage());
+                (multiplier + slam.strategyMultiplier + slam.angelMultiplier) * slam.getDamage());
         setEffect(1, 0, true);
     }
 
@@ -248,46 +257,50 @@ public abstract class Hero implements Subject {
      * @param drain se calculeaza HP-ul de baza al victimei conform cerintei si
      *              apoi se calculeaza damage-ul fara modificatori de rasa (baseTakenDamage)
      *              se actualizeaza damage-ul calculat anterior in functie si
-     *              de amplificatorul de rasa(takenDamage)
+     *              de amplificatorul de rasa, modificatorul dat de inger(daca exista) si
+     *              modificatorul de strategie(daca exista)(takenDamage)
      */
     public void receive(final Drain drain) {
         float drainHP = getDrainHP();
         baseTakenDamage += Math.round(drain.getDamage(drainHP));
-        takenDamage += Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * drain.getDamage(drainHP));
+        float effectivePercent = (multiplier + drain.strategyMultiplier + drain.angelMultiplier);
+        takenDamage += Math.round(drain.getDamagePercent(drainHP, effectivePercent));
     }
 
     /**
      * @param deflect primeste ca paramentru abilitatea cu care victima a fost atacata,
      *                calculandu-se damage-ul fara modificatori de rasa (baseTakenDamage)
      *                se actualizeaza damage-ul calculat anterior in functie si
-     *                de amplificatorul de rasa(takenDamage)
+     *                de amplificatorul de rasa, modificatorul dat de inger(daca exista) si
+     *                modificatorul de strategie(daca exista)(takenDamage)
      */
 
     public void receive(final Deflect deflect) {
         baseTakenDamage += Math.round(deflect.getDamage());
-        takenDamage += Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * deflect.getDamage());
+        takenDamage += Math.round((multiplier + deflect.strategyMultiplier
+                + deflect.angelMultiplier) * deflect.getDamage());
     }
 
     /**
      * @param backstab primeste ca paramentru abilitatea cu care victima a fost atacata,
      *                 calculandu-se damage-ul fara modificatori de rasa (baseTakenDamage)
      *                 se actualizeaza damage-ul calculat anterior in functie si
-     *                 de amplificatorul de rasa(takenDamage)
+     *                 de amplificatorul de rasa, modificatorul dat de inger(daca exista) si
+     *                 modificatorul de strategie(daca exista)(takenDamage)
      */
 
     public void receive(final Backstab backstab) {
         baseTakenDamage += Math.round(backstab.getDamage());
-        takenDamage += Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * backstab.getDamage());
+        takenDamage += Math.round((multiplier - Constants.ESTIMATION + backstab.strategyMultiplier
+                + backstab.angelMultiplier) * backstab.getDamage());
     }
 
     /**
      * @param paralysis primeste ca paramentru abilitatea cu care victima a fost atacata,
      *                  calculandu-se damage-ul fara modificatori de rasa (baseTakenDamage)
      *                  se actualizeaza damage-ul calculat anterior in functie si
-     *                  de amplificatorul de rasa(takenDamage)
+     *                  de amplificatorul de rasa, modificatorul dat de inger(daca exista) si
+     *                  modificatorul de strategie(daca exista)(takenDamage)
      *                  se seteaza efectul de overtime specific abilitatii Paralysis,
      *                  specificandu-se numarul rundelor si damage-ul per runda amplificat
      *                  si de modificatorul de rasa si incapacitatea miscarii adversarului
@@ -295,10 +308,11 @@ public abstract class Hero implements Subject {
 
     public void receive(final Paralysis paralysis) {
         baseTakenDamage += Math.round(paralysis.getDamage());
-        takenDamage += Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * paralysis.getDamage());
+        takenDamage += Math.round((multiplier - Constants.ESTIMATION + paralysis.strategyMultiplier
+                + paralysis.angelMultiplier) * paralysis.getDamage());
         setEffect(paralysis.getRounds(), Math.round(
-                (multiplier + strategyMultiplier + angelMultiplier) * paralysis.getRoundDamage()),
+                (multiplier - Constants.ESTIMATION + paralysis.strategyMultiplier
+                        + paralysis.angelMultiplier) * paralysis.getRoundDamage()),
                 true);
     }
 
@@ -311,20 +325,27 @@ public abstract class Hero implements Subject {
         baseTakenDamage = 0;
     }
 
+    /**
+     * .
+     * informeaza observer-ul in privinta unui nou eveniment
+     *
+     * @param event
+     */
+
     @Override
-    public void updateObserver(Event event) {
-        TheGreatestMagician.getInstance().update(event);
+    public void updateObserver(final Event event) {
+        observer.update(event);
     }
 
     /**
      * actualizeaza HP-ul in functie de damage-ul primit in urma unei lupte.
      * daca HP-ul devine mai mic sau egal cu 0, atunci victima a murit.
      */
-    // notificare
-    public void takeDamage(Hero killer) {
+    public void takeDamage(final Hero killer) {
         currentHP -= takenDamage;
         if (currentHP <= 0) {
-            Event kill = new Kill(this.getHeroType(), this.getID(), killer.getHeroType(), killer.getID());
+            Event kill = new Kill(this.getHeroType(), this.getId(),
+                    killer.getHeroType(), killer.getId());
             updateObserver(kill);
             dead = true;
         }
@@ -342,12 +363,18 @@ public abstract class Hero implements Subject {
 
     /**
      * @param h1
-     * @return verifica daca doi eroi se afla pe acelasi teren
+     * @return verifica daca doi eroi se afla pe acelasi teren.
      */
 
     public boolean isHere(final Hero h1) {
         return (this.row == h1.row) && (this.column == h1.column);
     }
+
+    /**
+     * verifica daca un inger se afla la aceleasi coordonate cu un erou.
+     * @param angel - ingerul
+     * @return
+     */
 
     public boolean isAngelHere(final Angel angel) {
         return (this.row == angel.getRow()) && (this.column == angel.getColumn());
@@ -396,95 +423,159 @@ public abstract class Hero implements Subject {
 
     /**
      * @return column
-     * getter pentru coloana
+     * getter pentru coloana.
      */
 
     public int getColumn() {
         return column;
     }
 
+    /**
+     * returneaza HP-ul necesar metodei receive specifica abilitatii.
+     * Drain
+     * @return
+     */
+
     public float getDrainHP() {
         return Math.min(Constants.MULTIPLIER_HP_DRAIN * getMaxHP(), currentHP);
     }
 
-    /**
-     * @param out
+    /**.
      * @throws IOException afisarea stats-urilor atribuita fiecarui jucator
      */
-    public abstract void print(BufferedWriter out) throws IOException;
+    public abstract void print() throws IOException;
+
+    /**.
+     * getter pentru angelMultiplier.
+     * @return
+     */
 
     public float getAngelMultiplier() {
         return angelMultiplier;
     }
 
-    public void setAngelMultiplier(float angelMultiplier) {
+    /**
+     * .
+     * setter pentru angelMultiplier
+     *
+     * @param angelMultiplier
+     */
+
+    public void setAngelMultiplier(final float angelMultiplier) {
         this.angelMultiplier = angelMultiplier;
     }
+
+    /**
+     * getter pentru HP-ul curent.
+     * @return
+     */
 
     public int getCurrentHP() {
         return currentHP;
     }
 
-    public void setCurrentHP(int currentHP) {
+    /**
+     * setter pentru HP-ul curent.
+     *
+     * @param currentHP
+     */
+
+    public void setCurrentHP(final int currentHP) {
         this.currentHP = currentHP;
+        if (currentHP > 0) {
+            dead = false;
+        }
     }
+
+    /**.
+     * metoda kill() declara eroul ca fiind mort
+     */
 
     public void kill() {
         this.dead = true;
     }
 
+    /**
+     * getter pentru XP curent.
+     * @return
+     */
+
     public int getCurrentXP() {
         return currentXP;
     }
 
-    public void setCurrentXP(int currentXP) {
+    /**
+     * setter pentru XP curent.
+     *
+     * @param currentXP
+     */
+
+    public void setCurrentXP(final int currentXP) {
         this.currentXP = currentXP;
     }
 
-    public abstract void accept(Angel angel);
+    /**
+     * aplicarea lui Visitor Pattern in toate subclasele.
+     *
+     * @param angel - ingerul care viziteaza eroul
+     * @throws IOException
+     */
 
-//    public abstract void accept(DamageAngel damageAngel);
-//
-//    public abstract void accept(DarkAngel darkAngel);
-//
-//    public abstract void accept(Dracula dracula);
-//
-//    public abstract void accept(GoodBoy goodBoy);
-//
-//    public abstract void accept(LevelUpAngel levelUpAngel);
-//
-//    public abstract void accept(LifeGiver lifeGiver);
-//
-//    public abstract void accept(SmallAngel smallAngel);
-//
-//    public abstract void accept(Spawner spawner);
-//
-//    public abstract void accept(TheDoomer theDoomer);
-//
-//    public abstract void accept(XPAngel xpAngel);
+    public abstract void accept(Angel angel) throws IOException;
+
+    /**
+     * getter pentru multiplicatorul de strategie.
+     * @return
+     */
 
     public float getStrategyMultiplier() {
         return strategyMultiplier;
     }
 
-    public void setStrategyMultiplier(float strategyMultiplier) {
+    /**
+     * setter pentru multiplicatorul de strategie.
+     *
+     * @param strategyMultiplier
+     */
+
+    public void setStrategyMultiplier(final float strategyMultiplier) {
         this.strategyMultiplier = strategyMultiplier;
     }
+
+    /**
+     * heroStrategy este de tip HeroStrategy si reprezinta strategia aleasa.
+     */
 
     public void chooseStrategy() {
         heroStrategy.choose(this);
     }
 
+    /**
+     * getter pentru tipul de erou.
+     * @return
+     */
+
     public String getHeroType() {
         return heroType;
     }
 
-    public int getID() {
-        return ID;
+    /**
+     * getter pentru id-ul eroului.
+     * @return
+     */
+
+    public int getId() {
+        return id;
     }
 
+    /**
+     * setter pentru observer.
+     * metoda existenta in interfata Subject
+     * @param observer
+     */
+
     @Override
-    public void registerObserver(Observer observer) {
+    public void registerObserver(final Observer observer) {
         this.observer = observer;
     }
 }

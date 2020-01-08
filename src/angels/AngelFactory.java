@@ -10,6 +10,17 @@ public class AngelFactory {
         return instance;
     }
 
+    /**
+     * contribuie la realizarea Factory Pattern, returnand
+     * un tip de inger corespunzator angelType-ului primit ca parametru
+     * si citit in clasa GameInputLoader.
+     *
+     * @param angelType      - tipul ingerului
+     * @param positionRow    - linia pe care e spawnat ingerul
+     * @param positionColumn - coloana pe care e spawnat ingerul
+     * @return
+     */
+
     public Angel getAngelByType(final String angelType, final int positionRow,
                                 final int positionColumn) {
         if (angelType.equals("DamageAngel")) {

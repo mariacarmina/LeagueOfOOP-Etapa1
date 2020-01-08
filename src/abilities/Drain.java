@@ -22,6 +22,19 @@ public class Drain extends Ability {
     }
 
     /**
+     * returneaza damage-ul in procente fiind asemanatoare cu metoda getDamage.
+     * percent reprezinta o parte din damage-ul de baza
+     *
+     * @param opponentHP
+     * @param percent
+     * @return
+     */
+
+    public float getDamagePercent(final float opponentHP, final float percent) {
+        return multiplier * (basePercentage + level * perLevelPercentage) * percent * opponentHP;
+    }
+
+    /**
      * @param source reprezinta jucatorul care dispune de aceasta abilitate
      * @param target reprezinta jucatorul atacat
      *               metoda reprezinta atacul lui source asupra lui target
@@ -32,7 +45,8 @@ public class Drain extends Ability {
     public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        //source.setAngelMultiplier(source.getAngelMultiplier());
+        setAngelMultiplier(source.getAngelMultiplier());
+        setStrategyMultiplier(source.getStrategyMultiplier());
         target.receive(this);
     }
 }

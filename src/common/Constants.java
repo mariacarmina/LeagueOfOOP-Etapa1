@@ -1,6 +1,106 @@
 package common;
 
 public final class Constants {
+    //DAMAGE ANGEL
+    public static final float KNIGHT_DAMAGE_ANGEL_MULTIPLIER = 0.15f;
+    public static final float PYROMANCER_DAMAGE_ANGEL_MULTIPLIER = 0.2f;
+    public static final float ROGUE_DAMAGE_ANGEL_MULTIPLIER = 0.3f;
+    public static final float WIZARD_DAMAGE_ANGEL_MULTIPLIER = 0.4f;
+
+    //DARK ANGEL
+    public static final int KNIGHT_DARK_ANGEL_HP = 40;
+    public static final int PYROMANCER_DARK_ANGEL_HP = 30;
+    public static final int ROGUE_DARK_ANGEL_HP = 10;
+    public static final int WIZARD_DARK_ANGEL_HP = 20;
+
+    //DRACULA ANGEL
+    public static final float KNIGHT_DRACULA_MULTIPLIER = 0.2f;
+    public static final int KNIGHT_DRACULA_HP = 60;
+    public static final float PYROMANCER_DRACULA_MULTIPLIER = 0.3f;
+    public static final int PYROMANCER_DRACULA_HP = 40;
+    public static final float ROGUE_DRACULA_MULTIPLIER = 0.1f;
+    public static final int ROGUE_DRACULA_HP = 35;
+    public static final float WIZARD_DRACULA_MULTIPLIER = 0.4f;
+    public static final int WIZARD_DRACULA_HP = 20;
+
+    //GOODBOY ANGEL
+    public static final float KNIGHT_GOODBOY_MULTIPLIER = 0.4f;
+    public static final int KNIGHT_GOODBOY_HP = 20;
+    public static final float PYROMANCER_GOODBOY_MULTIPLIER = 0.5f;
+    public static final int PYROMANCER_GOODBOY_HP = 30;
+    public static final float ROGUE_GOODBOY_MULTIPLIER = 0.4f;
+    public static final int ROGUE_GOODBOY_HP = 40;
+    public static final float WIZARD_GOODBOY_MULTIPLIER = 0.3f;
+    public static final int WIZARD_GOODBOY_HP = 50;
+
+    //LEVELUP ANGEL
+    public static final float KNIGHT_LEVELUP_MULTIPLIER = 0.1f;
+    public static final float PYROMANCER_LEVELUP_MULTIPLIER = 0.2f;
+    public static final float ROGUE_LEVELUP_MULTIPLIER = 0.15f;
+    public static final float WIZARD_LEVELUP_MULTIPLIER = 0.25f;
+
+    //LIFEGIVER ANGEL
+    public static final int KNIGHT_LIFEGIVER_HP = 100;
+    public static final int PYROMANCER_LIFEGIVER_HP = 80;
+    public static final int ROGUE_LIFEGIVER_HP = 90;
+    public static final int WIZARD_LIFEGIVER_HP = 120;
+
+    //GOODBOY ANGEL
+    public static final float KNIGHT_SMALL_ANGEL_MULTIPLIER = 0.1f;
+    public static final int KNIGHT_SMALL_ANGEL_HP = 10;
+    public static final float PYROMANCER_SMALL_ANGEL_MULTIPLIER = 0.15f;
+    public static final int PYROMANCER_SMALL_ANGEL_HP = 15;
+    public static final float ROGUE_SMALL_ANGEL_MULTIPLIER = 0.05f;
+    public static final int ROGUE_SMALL_ANGEL_HP = 20;
+    public static final float WIZARD_SMALL_ANGEL_MULTIPLIER = 0.1f;
+    public static final int WIZARD_SMALL_ANGEL_HP = 25;
+
+    //SPAWNER ANGEL
+    public static final int KNIGHT_SPAWNER_HP = 200;
+    public static final int PYROMANCER_SPAWNER_HP = 150;
+    public static final int ROGUE_SPAWNER_HP = 180;
+    public static final int WIZARD_SPAWNER_HP = 120;
+
+    //XP ANGEL
+    public static final int KNIGHT_BONUS_XP = 45;
+    public static final int PYROMANCER_BONUS_XP = 50;
+    public static final int ROGUE_BONUS_XP = 40;
+    public static final int WIZARD_BONUS_XP = 60;
+
+    //KNIGHT Strategy
+    public static final int KNIGHT_MIN_LIMIT = 3;
+    public static final int KNIGHT_MAX_LIMIT = 2;
+    public static final float KNIGHT_ATTACK_BOOST = 0.5f;
+    public static final float KNIGHT_DEFENSE_BOOST = 0.2f;
+    public static final int KNIGHT_LOSS_HP = 5;
+    public static final int KNIGHT_WIN_HP = 4;
+
+    //PYROMANCER Strategy
+    public static final int PYROMANCER_MIN_LIMIT = 4;
+    public static final int PYROMANCER_MAX_LIMIT = 3;
+    public static final float PYROMANCER_ATTACK_BOOST = 0.7f;
+    public static final float PYROMANCER_DEFENSE_BOOST = 0.3f;
+    public static final int PYROMANCER_LOSS_HP = 4;
+    public static final int PYROMANCER_WIN_HP = 3;
+
+    //ROGUE Strategy
+    public static final int ROGUE_MIN_LIMIT = 7;
+    public static final int ROGUE_MAX_LIMIT = 5;
+    public static final float ROGUE_ATTACK_BOOST = 0.4f;
+    public static final float ROGUE_DEFENSE_BOOST = 0.1f;
+    public static final int ROGUE_LOSS_HP = 7;
+    public static final int ROGUE_WIN_HP = 2;
+
+    //Knight Strategy
+    public static final int WIZARD_MIN_LIMIT = 4;
+    public static final int WIZARD_MAX_LIMIT = 2;
+    public static final float WIZARD_ATTACK_BOOST = 0.6f;
+    public static final float WIZARD_DEFENSE_BOOST = 0.2f;
+    public static final int WIZARD_LOSS_HP = 10;
+    public static final int WIZARD_WIN_HP = 5;
+
+    //Estimations
+    public static final float ESTIMATION = 0.000001f;
 
     //Moves
     public static final char UP = 'U';

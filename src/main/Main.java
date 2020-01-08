@@ -1,5 +1,7 @@
 package main;
 
+import common.FileLogger;
+
 import java.io.IOException;
 
 public final class Main {
@@ -11,7 +13,8 @@ public final class Main {
         GameInputLoader gameInputLoader = new GameInputLoader(args[0]);
         GameInput gameInput = gameInputLoader.load();
         GameEngine gameEngine = new GameEngine(gameInput);
+        FileLogger.initializeLogger(args[1]);
         gameEngine.playGame();
-        gameEngine.print(args[1]);
+        gameEngine.print();
     }
 }

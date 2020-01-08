@@ -48,7 +48,8 @@ public class Execute extends Ability {
     public void cast(final Hero source, final Hero target) {
         setLevel(source.getLevel());
         setMultiplier(source.getLandModifier());
-        //source.setAngelMultiplier(source.getAngelMultiplier());
+        setAngelMultiplier(source.getAngelMultiplier());
+        setStrategyMultiplier(source.getStrategyMultiplier());
         target.receive(this);
     }
 }

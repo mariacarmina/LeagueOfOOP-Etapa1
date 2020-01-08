@@ -1,5 +1,6 @@
 package angels;
 
+import common.Constants;
 import events.Event;
 import events.Helped;
 import heroes.Knight;
@@ -8,45 +9,108 @@ import heroes.Rogue;
 import heroes.Wizard;
 
 public class LevelUpAngel extends Angel {
-    public LevelUpAngel(int row, int column) {
+    public LevelUpAngel(final int row, final int column) {
         super(row, column);
         this.setAngelType("LevelUpAngel");
     }
 
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * LevelUpAngel ofera un boost al modificatorilor de damage si unul pentru
+     * XP, deci adminul va fi notificat cand acest inger va ajuta un erou, prin
+     * intermediul event-urilor helped si LevelUp prezent in metoda levelUp()
+     * din clasa abstracta Hero.
+     *
+     * @param knight - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Knight knight) {
-        knight.setCurrentXP(knight.getCurrentXP() + (knight.needToLevel() - knight.getCurrentXP()));
+    public void visit(final Knight knight) {
+        knight.setCurrentXP(knight.getCurrentXP() + (knight.needToLevel()
+                - knight.getCurrentXP()));
+        knight.setStrategyMultiplier(knight.getStrategyMultiplier()
+                + Constants.KNIGHT_LEVELUP_MULTIPLIER);
+        Event helped = new Helped(this.getAngelType(), knight.getHeroType(), knight.getId());
+        updateObserver(helped);
         knight.levelUp();
-        knight.setAngelMultiplier(knight.getAngelMultiplier() + 0.1f);
-        Event helped = new Helped(this.getAngelType(), knight.getHeroType(), knight.getID());
-        updateObserver(helped);
     }
 
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * LevelUpAngel ofera un boost al modificatorilor de damage si unul pentru
+     * XP, deci adminul va fi notificat cand acest inger va ajuta un erou, prin
+     * intermediul event-urilor helped si LevelUp prezent in metoda levelUp()
+     * din clasa abstracta Hero.
+     * @param pyromancer - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Pyromancer pyromancer) {
-        pyromancer.setCurrentXP(
-                pyromancer.getCurrentXP() + (pyromancer.needToLevel() - pyromancer.getCurrentXP()));
+    public void visit(final Pyromancer pyromancer) {
+        pyromancer.setCurrentXP(pyromancer.getCurrentXP()
+                + (pyromancer.needToLevel() - pyromancer.getCurrentXP()));
+        pyromancer.setStrategyMultiplier(pyromancer.getStrategyMultiplier()
+                + Constants.PYROMANCER_LEVELUP_MULTIPLIER);
+        Event helped = new Helped(this.getAngelType(), pyromancer.getHeroType(),
+                pyromancer.getId());
+        updateObserver(helped);
         pyromancer.levelUp();
-        pyromancer.setAngelMultiplier(pyromancer.getAngelMultiplier() + 0.2f);
-        Event helped = new Helped(this.getAngelType(), pyromancer.getHeroType(), pyromancer.getID());
-        updateObserver(helped);
     }
 
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * LevelUpAngel ofera un boost al modificatorilor de damage si unul pentru
+     * XP, deci adminul va fi notificat cand acest inger va ajuta un erou, prin
+     * intermediul event-urilor helped si LevelUp prezent in metoda levelUp()
+     * din clasa abstracta Hero.
+     * @param rogue - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Rogue rogue) {
-        rogue.setCurrentXP(rogue.getCurrentXP() + (rogue.needToLevel() - rogue.getCurrentXP()));
+    public void visit(final Rogue rogue) {
+        rogue.setCurrentXP(rogue.getCurrentXP()
+                + (rogue.needToLevel() - rogue.getCurrentXP()));
+        rogue.setStrategyMultiplier(rogue.getStrategyMultiplier()
+                + Constants.ROGUE_LEVELUP_MULTIPLIER);
+        Event helped = new Helped(this.getAngelType(), rogue.getHeroType(),
+                rogue.getId());
+        updateObserver(helped);
         rogue.levelUp();
-        rogue.setAngelMultiplier(rogue.getAngelMultiplier() + 0.15f);
-        Event helped = new Helped(this.getAngelType(), rogue.getHeroType(), rogue.getID());
-        updateObserver(helped);
     }
 
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * LevelUpAngel ofera un boost al modificatorilor de damage si unul pentru
+     * XP, deci adminul va fi notificat cand acest inger va ajuta un erou, prin
+     * intermediul event-urilor helped si LevelUp prezent in metoda levelUp()
+     * din clasa abstracta Hero.
+     * @param wizard - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Wizard wizard) {
-        wizard.setCurrentXP(wizard.getCurrentXP() + (wizard.needToLevel() - wizard.getCurrentXP()));
-        wizard.levelUp();
-        wizard.setAngelMultiplier(wizard.getAngelMultiplier() + 0.25f);
-        Event helped = new Helped(this.getAngelType(), wizard.getHeroType(), wizard.getID());
+    public void visit(final Wizard wizard) {
+        wizard.setCurrentXP(wizard.getCurrentXP()
+                + (wizard.needToLevel() - wizard.getCurrentXP()));
+        wizard.setStrategyMultiplier(wizard.getStrategyMultiplier()
+                + Constants.WIZARD_LEVELUP_MULTIPLIER);
+        Event helped = new Helped(this.getAngelType(), wizard.getHeroType(),
+                wizard.getId());
         updateObserver(helped);
+        wizard.levelUp();
     }
 }

@@ -13,7 +13,8 @@ public class GameInput {
     private ArrayList<Integer> angelsSizes;
 
     public GameInput(final ArrayList<String> map, final ArrayList<Hero> heroes,
-                     final ArrayList<String> moves, final ArrayList<Angel> angels, final ArrayList<Integer> angelsSizes) {
+                     final ArrayList<String> moves, final ArrayList<Angel> angels,
+                     final ArrayList<Integer> angelsSizes) {
         this.map = map;
         this.heroes = heroes;
         this.moves = moves;
@@ -80,19 +81,35 @@ public class GameInput {
         this.moves = moves;
     }
 
+    /**
+     * .
+     * getter pentru lista de ingeri
+     *
+     * @return
+     */
+
     public ArrayList<Angel> getAngels() {
         return angels;
     }
 
-    public void setAngels(ArrayList<Angel> angels) {
+    /**
+     * .
+     * setter pentru lista de ingeri
+     *
+     * @param angels - ingerii care sunt descrisi de tip si coordonate
+     */
+
+    public void setAngels(final ArrayList<Angel> angels) {
         this.angels = angels;
     }
+
+    /**.
+     * getter pentru lista de numere de ingeri per runda
+     * @return
+     */
 
     public ArrayList<Integer> getAngelsSizes() {
         return angelsSizes;
     }
 
-    public void setAngelsSizes(ArrayList<Integer> angelsSizes) {
-        this.angelsSizes = angelsSizes;
-    }
 }

@@ -1,48 +1,123 @@
 package angels;
 
+import common.Constants;
 import events.Event;
 import events.Helped;
+import heroes.Hero;
 import heroes.Knight;
 import heroes.Pyromancer;
 import heroes.Rogue;
 import heroes.Wizard;
 
 public class GoodBoy extends Angel {
-    public GoodBoy(int row, int column) {
+    public GoodBoy(final int row, final int column) {
         super(row, column);
-        this.setAngelType("GooedBoy");
+        this.setAngelType("GoodBoy");
     }
 
+    /**
+     * .
+     * returneaza minimul dintre bonusul de HP primit si
+     * diferenta dintre HP-ul curent al eroului si cel maxim per nivel,
+     * astfel incat bonusul capatat sa nu depaseasca valoarea maxima a
+     * HP-ului specifica fiecarui erou
+     *
+     * @param increasedAmount - bonusul capatat
+     * @param hero            - eroul caruia i se va aplica bonusul
+     * @return
+     */
+
+    public int heal(final int increasedAmount, final Hero hero) {
+        return Math.min(increasedAmount, hero.getMaxHP() - hero.getCurrentHP());
+    }
+
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * GoodBoy ofera un boost al modificatorilor de damage si unul pentru
+     * HPpana ajunge la maxim, deci adminul va fi notificat cand acest inger va ajuta un erou, prin
+     * intermediul event-ului helped.
+     *
+     * @param knight - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Knight knight) {
-        knight.setAngelMultiplier(knight.getAngelMultiplier() + 0.4f);
-        knight.setCurrentHP(knight.getCurrentHP() + 20);
-        Event helped = new Helped(this.getAngelType(), knight.getHeroType(), knight.getID());
+    public void visit(final Knight knight) {
+        knight.setAngelMultiplier(knight.getAngelMultiplier()
+                + Constants.KNIGHT_GOODBOY_MULTIPLIER);
+        int increasedHP = heal(Constants.KNIGHT_GOODBOY_HP, knight);
+        knight.setCurrentHP(knight.getCurrentHP() + increasedHP);
+        Event helped = new Helped(this.getAngelType(), knight.getHeroType(), knight.getId());
         updateObserver(helped);
-
     }
 
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * GoodBoy ofera un boost al modificatorilor de damage si unul pentru
+     * HP pana ajunge la maxim, deci adminul va fi notificat cand acest inger va ajuta un erou, prin
+     * intermediul event-ului helped.
+     * @param pyromancer - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Pyromancer pyromancer) {
-        pyromancer.setAngelMultiplier(pyromancer.getAngelMultiplier() + 0.5f);
-        pyromancer.setCurrentHP(pyromancer.getCurrentHP() + 30);
-        Event helped = new Helped(this.getAngelType(), pyromancer.getHeroType(), pyromancer.getID());
+    public void visit(final Pyromancer pyromancer) {
+        pyromancer.setAngelMultiplier(pyromancer.getAngelMultiplier()
+                + Constants.PYROMANCER_GOODBOY_MULTIPLIER);
+        int increasedHP = heal(Constants.PYROMANCER_GOODBOY_HP, pyromancer);
+        pyromancer.setCurrentHP(pyromancer.getCurrentHP() + increasedHP);
+        Event helped = new Helped(this.getAngelType(), pyromancer.getHeroType(),
+                pyromancer.getId());
         updateObserver(helped);
     }
 
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * GoodBoy ofera un boost al modificatorilor de damage si unul pentru
+     * HP pana ajunge la maxim, deci adminul va fi notificat cand acest inger
+     * va ajuta un erou, prin intermediul event-ului helped.
+     * @param rogue - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Rogue rogue) {
-        rogue.setAngelMultiplier(rogue.getAngelMultiplier() + 0.4f);
-        rogue.setCurrentHP(rogue.getCurrentHP() + 40);
-        Event helped = new Helped(this.getAngelType(), rogue.getHeroType(), rogue.getID());
+    public void visit(final Rogue rogue) {
+        rogue.setAngelMultiplier(rogue.getAngelMultiplier()
+                + Constants.ROGUE_GOODBOY_MULTIPLIER);
+        int increasedHP = heal(Constants.ROGUE_GOODBOY_HP, rogue);
+        rogue.setCurrentHP(rogue.getCurrentHP() + increasedHP);
+        Event helped = new Helped(this.getAngelType(), rogue.getHeroType(), rogue.getId());
         updateObserver(helped);
     }
 
+    /**
+     * pentru a realiza Visitor Pattern, metoda visit e
+     * supraincarcata in fiecare tip de inger si sunt
+     * implementate particularitatile ingerului pentru
+     * fiecare tip de erou impreuna cu evenimentele specifice
+     * ingerului.
+     * GoodBoy ofera un boost al modificatorilor de damage si unul pentru
+     * HP pana ajunge la maxim, deci adminul va fi notificat cand acest inger
+     * va ajuta un erou, prin intermediul event-ului helped.
+     * @param wizard - eroul pe care il viziteaza
+     */
+
     @Override
-    public void visit(Wizard wizard) {
-        wizard.setAngelMultiplier(wizard.getAngelMultiplier() + 0.3f);
-        wizard.setCurrentHP(wizard.getCurrentHP() + 50);
-        Event helped = new Helped(this.getAngelType(), wizard.getHeroType(), wizard.getID());
+    public void visit(final Wizard wizard) {
+        wizard.setAngelMultiplier(wizard.getAngelMultiplier()
+                + Constants.WIZARD_GOODBOY_MULTIPLIER);
+        int increasedHP = heal(Constants.WIZARD_GOODBOY_HP, wizard);
+        wizard.setCurrentHP(wizard.getCurrentHP() + increasedHP);
+        Event helped = new Helped(this.getAngelType(), wizard.getHeroType(), wizard.getId());
         updateObserver(helped);
     }
 }

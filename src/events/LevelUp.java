@@ -5,14 +5,20 @@ public class LevelUp implements Event {
     private int heroID;
     private int level;
 
-    public LevelUp(String heroType, int heroID, int level) {
+    public LevelUp(final String heroType, final int heroID, final int level) {
         this.heroType = heroType;
         this.heroID = heroID;
         this.level = level;
     }
 
+    /**
+     * returneaza mesajul specific evenimentului LevelUp.
+     *
+     * @return
+     */
+
     @Override
     public String toString() {
-        return heroType + " " + heroID + " reached level" + " " + level;
+        return heroType + " " + heroID + " reached level" + " " + level + "\n";
     }
 }

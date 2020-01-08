@@ -5,6 +5,8 @@ import heroes.Hero;
 public abstract class Ability {
     public int level;
     public float multiplier;
+    public float angelMultiplier;
+    public float strategyMultiplier;
 
 
     /**
@@ -21,6 +23,27 @@ public abstract class Ability {
         this.multiplier = multiplier;
     }
 
+    /**
+     * @param strategyMultiplier setter pentru modificatorul de startegie
+     */
+
+    public void setStrategyMultiplier(final float strategyMultiplier) {
+        this.strategyMultiplier = strategyMultiplier;
+    }
+
+    /**
+     * @param source
+     * @param target metoda cast este folosita pe post de attack intre source si target
+     */
+
     public abstract void cast(Hero source, Hero target);
 
+    /**
+     *
+     * @param angelMultiplier setter pentru modificatorul de la ingeri
+     */
+
+    public void setAngelMultiplier(final float angelMultiplier) {
+        this.angelMultiplier = angelMultiplier;
+    }
 }

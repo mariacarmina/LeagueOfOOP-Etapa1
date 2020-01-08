@@ -10,18 +10,17 @@ import observer.Observer;
 import observer.Subject;
 
 
+
 public abstract class Angel implements Subject {
     protected String angelType;
     protected Observer observer;
 
     protected int row;
     protected int column;
-    protected boolean isSpawned;
 
-    public Angel(int row, int column) {
+    public Angel(final int row, final int column) {
         this.row = row;
         this.column = column;
-        this.isSpawned = false;
     }
 
     public abstract void visit(Knight knight);
@@ -32,60 +31,72 @@ public abstract class Angel implements Subject {
 
     public abstract void visit(Wizard wizard);
 
+    /**
+     * @return row
+     * getter pentru linie.
+     */
+
     public int getRow() {
         return row;
     }
+
+    /**
+     *
+     * @return column
+     * getter pentru coloana.
+     */
 
     public int getColumn() {
         return column;
     }
 
-//    //public Observer getObserver() {
-//        return observer;
-//    }
-
-//    //public void setObserver(Observer observer) {
-//        this.observer = observer;
-//    }
+    /**
+     *
+     * @return angelType
+     * getter pentru angelType.
+     */
 
     public String getAngelType() {
         return angelType;
     }
 
-    public void setAngelType(String angelType) {
+    /**
+     *
+     * @param angelType setter pentru angelType
+     */
+
+    public void setAngelType(final String angelType) {
         this.angelType = angelType;
     }
 
+    /**
+     *
+     * @param observer setter pentru observer
+     */
+
     @Override
-    public void registerObserver(Observer observer) {
+    public void registerObserver(final Observer observer) {
         this.observer = observer;
     }
 
+    /**.
+     *metoda suprascrisa din interfata Subject
+     * pentru a notifica adminul
+     * @param event ce reprezinta evenimentul
+     *             ce trebuie notificat
+     */
+
     @Override
-    public void updateObserver(Event event) {
+    public void updateObserver(final Event event) {
         observer.update(event);
     }
+
+    /**.
+     * notifica aparitia unui nou inger
+     */
 
     public void spawned() {
         Spawn spawn = new Spawn(angelType, row, column);
         updateObserver(spawn);
     }
-
-
-//    @Override
-//    public void updateSpawned() {
-//        if (!isSpawned) {
-//            Spawn spawn = new Spawn(angelType, row, column);
-//            observer.update(spawn);
-//        }
-//    }
-//
-//    public void updateHelped(Helped helped) {
-//        throw new UnsupportedOperationException("Not implemented yet.");
-//    }
-//
-//
-//    public void updateHit(Hit hit) {
-//        throw new UnsupportedOperationException("Not implemented yet.");
-//    }
 }

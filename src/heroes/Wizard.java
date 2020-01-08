@@ -11,74 +11,32 @@ import abilities.Paralysis;
 import abilities.Slam;
 import angels.Angel;
 import common.Constants;
+import common.FileLogger;
 import main.Map;
-import observer.Observer;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class Wizard extends Hero {
-    public Wizard(final int row, final int column, final int ID) {
-        super(row, column, Constants.WIZARD_HP, Constants.WIZARD_EXTRA_HP, "Wizard", ID);
+    public Wizard(final int row, final int column, final int id) {
+        super(row, column, Constants.WIZARD_HP, Constants.WIZARD_EXTRA_HP,
+                "Wizard", id);
         abilities.add(new Drain());
         abilities.add(new Deflect());
         heroStrategy = new WizardStrategy();
     }
 
+    /**
+     * .
+     * prin metoda accept, i se atribuie lui Wizard particularitatile ingerului
+     * care il viziteaza
+     *
+     * @param angel - ingerul care viziteaza eroul
+     */
+
     @Override
-    public void accept(Angel angel) {
+    public void accept(final Angel angel) {
         angel.visit(this);
     }
-
-//    @Override
-//    public void accept(DamageAngel damageAngel) {
-//        damageAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(DarkAngel darkAngel) {
-//        darkAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(Dracula dracula) {
-//        dracula.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(GoodBoy goodBoy) {
-//        goodBoy.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(LevelUpAngel levelUpAngel) {
-//        levelUpAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(LifeGiver lifeGiver) {
-//        lifeGiver.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(SmallAngel smallAngel) {
-//        smallAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(Spawner spawner) {
-//        spawner.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(TheDoomer theDoomer) {
-//        theDoomer.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(XPAngel xpAngel) {
-//        xpAngel.visit(this);
-//    }
 
     /**
      * @param fireblast se da amplificatorul de rasa, multiplier, pentru aceasta abilitate
@@ -171,24 +129,20 @@ public class Wizard extends Hero {
     }
 
     /**
-     * @param out
      * @throws IOException afiseaza stats-urile jucatorului
      */
 
-    public void print(final BufferedWriter out) throws IOException {
+    public void print() throws IOException {
+        FileLogger out = FileLogger.getLogger();
         if (this.isDead()) {
-            out.write("W " + "dead");
-            out.newLine();
+            out.write("W dead\n");
         } else {
-            out.write("W " + level + " " + currentXP + " " + currentHP + " " + row + " " + column);
-            out.newLine();
+            out.write("W " + level + " " + currentXP + " " + currentHP + " "
+                    + row + " " + column + "\n");
+
         }
     }
 
-    @Override
-    public void registerObserver(Observer observer) {
-
-    }
 }
 
 

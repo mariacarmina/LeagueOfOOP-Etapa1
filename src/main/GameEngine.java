@@ -2,12 +2,12 @@ package main;
 
 import abilities.Ability;
 import angels.Angel;
+import common.FileLogger;
 import heroes.Hero;
 import heroes.Wizard;
 import observer.Observer;
+import observer.TheGreatestMagician;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -47,6 +47,8 @@ public class GameEngine {
         }
         hero1.resetFight();
         hero2.resetFight();
+
+        int lastLevel = hero1.getLevel();
         for (Ability ability : hero1.getAbilities()) {
             ability.cast(hero1, hero2);
         }
@@ -55,11 +57,14 @@ public class GameEngine {
             ability.cast(hero2, hero1);
         }
         hero1.takeDamage(hero2);
+
         if (!hero1.isDead() && hero2.isDead()) {
             hero1.gainXP(hero2.getLevel());
-        }
-        if (!hero2.isDead() && hero1.isDead()) {
+        } else if (!hero2.isDead() && hero1.isDead()) {
             hero2.gainXP(hero1.getLevel());
+        } else if (hero1.isDead() && hero2.isDead()) {
+            hero1.gainXP(hero2.getLevel());
+            hero2.gainXP(lastLevel);
         }
     }
 
@@ -70,18 +75,30 @@ public class GameEngine {
      * atata timp cat ambii jucatorii sunt vii si cat timp se afla pe acelasi teren, se lupta.
      */
 
-    public void playGame() {
+    public void playGame() throws IOException {
         int angelOffset = 0;
+        for (Hero hero : heroes) {
+            hero.registerObserver(TheGreatestMagician.getInstance());
+        }
+        for (Angel angel : angels) {
+            angel.registerObserver(TheGreatestMagician.getInstance());
+        }
+
         for (int i = 0; i < moves.size(); ++i) {
+            FileLogger.getLogger().write(String.format("~~ Round %d ~~\n", i + 1));
             for (int j = 0; j < heroes.size(); ++j) {
-                if (!heroes.get(j).isStunned() && !heroes.get(j).isDead()) {
-                    heroes.get(j).chooseStrategy();
-                    heroes.get(j).moveHero(moves.get(i).charAt(j));
+                if (!heroes.get(j).isDead()) {
+                    if (!heroes.get(j).isStunned()) {
+                        heroes.get(j).sufferEffect();
+                        heroes.get(j).chooseStrategy();
+                        heroes.get(j).moveHero(moves.get(i).charAt(j));
+                    } else {
+                        heroes.get(j).sufferEffect();
+                    }
                 }
-                heroes.get(j).sufferEffect();
             }
             for (int j = 0; j < heroes.size(); ++j) {
-                for (int k = 0; k < j; ++k) {
+                for (int k = j + 1; k < heroes.size(); ++k) {
                     if (!heroes.get(j).isDead() && !heroes.get(k).isDead()) {
                         if (heroes.get(j).isHere(heroes.get(k))) {
                             battle(heroes.get(j), heroes.get(k));
@@ -101,22 +118,20 @@ public class GameEngine {
                 }
             }
             angelOffset += angelsSizes.get(i);
+            FileLogger.getLogger().write("\n");
         }
     }
 
     /**
-     * @param outputFile
      * @throws IOException afiseaza stats-urile jucatorilor
      */
 
-    public void print(final String outputFile) throws IOException {
-        BufferedWriter out = new BufferedWriter(new FileWriter(outputFile));
+    public void print() throws IOException {
+        FileLogger.getLogger().write("~~ Results ~~\n");
         for (Hero hero : heroes) {
-            hero.print(out);
+            hero.print();
         }
-        out.newLine();
-        out.flush();
-        out.close();
+        FileLogger.getLogger().close();
     }
 
 }

@@ -10,74 +10,32 @@ import abilities.Paralysis;
 import abilities.Slam;
 import angels.Angel;
 import common.Constants;
+import common.FileLogger;
 import main.Map;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class Knight extends Hero {
 
-    public Knight(final int row, final int column, final int ID) {
-        super(row, column, Constants.KNIGHT_HP, Constants.KNIGHT_EXTRA_HP, "Knight", ID);
+    public Knight(final int row, final int column, final int id) {
+        super(row, column, Constants.KNIGHT_HP, Constants.KNIGHT_EXTRA_HP, "Knight", id);
         abilities.add(new Execute());
         abilities.add(new Slam());
         heroStrategy = new KnightStrategy();
     }
 
+    /**
+     * .
+     * prin metoda accept, i se atribuie lui Knight particularitatile ingerului
+     * care il viziteaza
+     *
+     * @param angel - ingerul care viziteaza eroul
+     */
+
     @Override
-    public void accept(Angel angel) {
+    public void accept(final Angel angel) {
         angel.visit(this);
     }
-
-//    @Override
-//    public void accept(DamageAngel damageAngel) {
-//        damageAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(DarkAngel darkAngel) {
-//        darkAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(Dracula dracula) {
-//        dracula.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(GoodBoy goodBoy) {
-//        goodBoy.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(LevelUpAngel levelUpAngel) {
-//        levelUpAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(LifeGiver lifeGiver) {
-//        lifeGiver.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(SmallAngel smallAngel) {
-//        smallAngel.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(Spawner spawner) {
-//        spawner.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(TheDoomer theDoomer) {
-//        theDoomer.visit(this);
-//    }
-//
-//    @Override
-//    public void accept(XPAngel xpAngel) {
-//        xpAngel.visit(this);
-//    }
 
     /**
      * @param fireblast se da amplificatorul de rasa, multiplier, aceasta abilitate
@@ -105,6 +63,7 @@ public class Knight extends Hero {
 
     public void receive(final Execute execute) {
         multiplier = Constants.KNIGHT_MODIFIER_EXECUTE;
+        unmodified = false;
         super.receive(execute);
     }
 
@@ -172,17 +131,17 @@ public class Knight extends Hero {
     }
 
     /**
-     * @param out
      * @throws IOException afiseaza stats-urile jucatorului
      */
 
-    public void print(final BufferedWriter out) throws IOException {
+    public void print() throws IOException {
+        FileLogger out = FileLogger.getLogger();
         if (this.isDead()) {
-            out.write("K " + "dead");
-            out.newLine();
+            out.write("K dead\n");
         } else {
-            out.write("K " + level + " " + currentXP + " " + currentHP + " " + row + " " + column);
-            out.newLine();
+            out.write("K " + level + " " + currentXP + " " + currentHP + " "
+                    + row + " " + column + "\n");
+
         }
     }
 

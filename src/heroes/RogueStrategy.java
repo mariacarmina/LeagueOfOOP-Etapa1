@@ -1,7 +1,11 @@
 package heroes;
 
+import common.Constants;
+
 public class RogueStrategy extends HeroStrategy {
     public RogueStrategy() {
-        super(7, 5, 0.4f, 0.1f, 7, 2);
+        super(Constants.ROGUE_MIN_LIMIT, Constants.ROGUE_MAX_LIMIT,
+                Constants.ROGUE_ATTACK_BOOST, Constants.ROGUE_DEFENSE_BOOST,
+                Constants.ROGUE_LOSS_HP, Constants.ROGUE_WIN_HP);
     }
 }
